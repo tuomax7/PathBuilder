@@ -12,15 +12,25 @@ const possibleWaypoints = [
 ];
 
 const App = () => {
+  const [pathname, setPathname] = useState("");
   const [waypoints, setWaypoints] = useState([]);
+  const [paths, setPaths] = useState([]);
 
   useEffect(() => {
-    axios.get("http://localhost:3001/api/path/get").then((res) => {
+    axios.get("http://localhost:3001/api/paths/get").then((res) => {
+      setPaths(res.data);
+    });
+    axios.get("http://localhost:3001/api/waypoints/get").then((res) => {
       setWaypoints(res.data);
     });
   }, []);
 
-  const generate = async () => {
+  //KORVAA SQL-KYSELYLLÄ
+  const waypointsOfPathID = (ID) =>
+    waypoints.filter((waypoint) => waypoint.pathID === ID);
+
+  const generate = async (e) => {
+    e.preventDefault();
     const randomWaypoint = () => {
       const randIndex = Math.floor(Math.random() * possibleWaypoints.length);
       const randomizedWaypoint = possibleWaypoints[randIndex];
@@ -28,11 +38,13 @@ const App = () => {
     };
 
     const randomPath = {
-      name: "TEST",
-      rating: 5,
+      name: pathname,
+      rating: 3,
     };
 
-    const randomWaypoints = Array.from({ length: 4 }, randomWaypoint);
+    const randomWaypoints = [
+      ...new Set(Array.from({ length: 4 }, randomWaypoint)),
+    ];
 
     const pathInsert = await axios.post(
       "http://localhost:3001/api/paths/insert",
@@ -54,17 +66,47 @@ const App = () => {
         };
       })
     );
-    setWaypoints(path);
+    const concatedWaypoints = [...waypoints, ...path];
+    setWaypoints(concatedWaypoints);
+    setPaths(
+      paths.concat({
+        ...randomPath,
+        ID: pathInsert.data[0].pathID,
+      })
+    );
+    setPathname("");
   };
   return (
     <div>
       <h1>PathBuilder</h1>
-      <button onClick={generate}>Generate path!</button>
+      <form onSubmit={generate}>
+        <input
+          type="text"
+          name="pathname"
+          placeholder="name your path..."
+          onChange={(e) => setPathname(e.target.value)}
+          value={pathname}
+        />
+        <button type="submit">Generate path!</button>
+      </form>
       <h3>Waypoints</h3>
-      {waypoints.map((waypoint) => (
-        <p key={waypoint.ID}>
-          {waypoint.name} of rating {waypoint.rating}
-        </p>
+      <ul>
+        {[...new Set(waypoints.map((wp) => wp.name))].map((waypoint) => (
+          <li key={waypoint}>{waypoint}</li>
+        ))}
+      </ul>
+      <h3>All paths</h3>
+      {paths.map((path) => (
+        <div key={path.ID}>
+          <button>
+            {path.name} of rating {path.rating}
+          </button>
+          <ol>
+            {waypointsOfPathID(path.ID).map((waypoint) => (
+              <li key={waypoint.ID}>{waypoint.name}</li>
+            ))}
+          </ol>
+        </div>
       ))}
     </div>
   );

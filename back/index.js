@@ -20,8 +20,15 @@ const db = mysql.createConnection({
   socketPath: "/tmp/mysql.sock",
 });
 
-app.get("/api/path/get", (req, res) => {
+app.get("/api/waypoints/get", (req, res) => {
   const sqlSelect = "SELECT * FROM waypoints;";
+  db.query(sqlSelect, (err, result) => {
+    res.send(result);
+  });
+});
+
+app.get("/api/paths/get", (req, res) => {
+  const sqlSelect = "SELECT * FROM paths;";
   db.query(sqlSelect, (err, result) => {
     res.send(result);
   });
