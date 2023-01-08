@@ -20,18 +20,37 @@ const db = mysql.createConnection({
   socketPath: "/tmp/mysql.sock",
 });
 
-app.get("/api/get", (req, res) => {
+app.get("/api/path/get", (req, res) => {
   const sqlSelect = "SELECT * FROM waypoints;";
   db.query(sqlSelect, (err, result) => {
     res.send(result);
   });
 });
 
-app.post("/api/insert", (req, res) => {
+app.post("/api/waypoints/insert", (req, res) => {
   const name = req.body.name;
   const rating = req.body.rating;
-  const sqlInsert = "INSERT INTO waypoints (name, rating) VALUES (?,?);";
+  const pathID = req.body.pathID;
+  const sqlInsert =
+    "INSERT INTO waypoints (name, rating, pathID) VALUES (?,?,?);";
+  db.query(sqlInsert, [name, rating, pathID], (err, result) => {});
+
+  const sqlSelect = "SELECT @@IDENTITY AS 'ID';";
+  db.query(sqlSelect, (err, result) => {
+    res.send(result);
+  });
+});
+
+app.post("/api/paths/insert", (req, res) => {
+  const name = req.body.name;
+  const rating = req.body.rating;
+  const sqlInsert = "INSERT INTO paths (name, rating) VALUES (?,?);";
   db.query(sqlInsert, [name, rating], (err, result) => {});
+
+  const sqlSelect = "SELECT @@IDENTITY AS 'pathID';";
+  db.query(sqlSelect, (err, result) => {
+    res.send(result);
+  });
 });
 
 app.listen(3001, () => {

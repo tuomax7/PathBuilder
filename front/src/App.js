@@ -12,33 +12,54 @@ const App = () => {
   const [waypoints, setWaypoints] = useState([]);
 
   useEffect(() => {
-    axios.get("http://localhost:3001/api/get").then((res) => {
+    axios.get("http://localhost:3001/api/path/get").then((res) => {
       setWaypoints(res.data);
     });
   }, []);
 
-  const generate = () => {
-    const randIndex = Math.floor(Math.random() * possibleWaypoints.length);
-    const randomizedWaypoint = possibleWaypoints[randIndex];
+  const generate = async () => {
+    const randomWaypoint = () => {
+      const randIndex = Math.floor(Math.random() * possibleWaypoints.length);
+      const randomizedWaypoint = possibleWaypoints[randIndex];
+      return randomizedWaypoint;
+    };
 
-    /*
-    const routeName = "TEST"
-    const rating = 5
-    post route insert,
-    loop waypoint inserts in index.js
-    */
+    const randomPath = {
+      name: "TEST",
+      rating: 5,
+    };
 
-    axios
-      .post("http://localhost:3001/api/insert", randomizedWaypoint)
-      .then(() => {});
-    setWaypoints([...waypoints, randomizedWaypoint]);
+    const randomWaypoints = Array.from({ length: 2 }, randomWaypoint);
+
+    const t = await axios.post(
+      "http://localhost:3001/api/paths/insert",
+      randomPath
+    );
+    const path = await Promise.all(
+      randomWaypoints.map(async (waypoint) => {
+        const b = await axios.post(
+          "http://localhost:3001/api/waypoints/insert",
+          {
+            ...waypoint,
+            pathID: t.data[0].pathID,
+          }
+        );
+        return {
+          ...waypoint,
+          pathID: t.data[0].pathID,
+          ID: b.data[0].ID,
+        };
+      })
+    );
+    setWaypoints(path);
   };
   return (
     <div>
       <h1>PathBuilder</h1>
-      <button onClick={generate}>Generate waypoint!</button>
+      <button onClick={generate}>Generate path!</button>
+      <h3>Waypoints</h3>
       {waypoints.map((waypoint) => (
-        <p key={waypoint.id}>
+        <p key={waypoint.ID}>
           {waypoint.name} of rating {waypoint.rating}
         </p>
       ))}
