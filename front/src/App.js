@@ -3,9 +3,12 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 
 const possibleWaypoints = [
-  { name: "Espoo", rating: 5 },
-  { name: "Helsinki", rating: 4 },
-  { name: "Vantaa", rating: 3 },
+  { name: "Leppävaara", rating: 5 },
+  { name: "Tapiola", rating: 4 },
+  { name: "Otaniemi", rating: 3 },
+  { name: "Niittykumpu", rating: 3 },
+  { name: "Matinkylä", rating: 2 },
+  { name: "Laajalahti", rating: 3 },
 ];
 
 const App = () => {
@@ -29,25 +32,25 @@ const App = () => {
       rating: 5,
     };
 
-    const randomWaypoints = Array.from({ length: 2 }, randomWaypoint);
+    const randomWaypoints = Array.from({ length: 4 }, randomWaypoint);
 
-    const t = await axios.post(
+    const pathInsert = await axios.post(
       "http://localhost:3001/api/paths/insert",
       randomPath
     );
     const path = await Promise.all(
       randomWaypoints.map(async (waypoint) => {
-        const b = await axios.post(
+        const waypointInsert = await axios.post(
           "http://localhost:3001/api/waypoints/insert",
           {
             ...waypoint,
-            pathID: t.data[0].pathID,
+            pathID: pathInsert.data[0].pathID,
           }
         );
         return {
           ...waypoint,
-          pathID: t.data[0].pathID,
-          ID: b.data[0].ID,
+          pathID: pathInsert.data[0].pathID,
+          ID: waypointInsert.data[0].ID,
         };
       })
     );
