@@ -1,6 +1,16 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 
 import axios from "axios";
+
+import {
+  useJsApiLoader,
+  GoogleMap,
+  Marker,
+  Autocomplete,
+  DirectionsRenderer,
+} from "@react-google-maps/api";
+
+const center = { lat: 60.18564, lng: 24.77457 };
 
 const possibleWaypoints = [
   { name: "Leppävaara", rating: 5 },
@@ -11,7 +21,41 @@ const possibleWaypoints = [
   { name: "Laajalahti", rating: 3 },
 ];
 
+const libraries = ["places"];
+
 const App = () => {
+  const { isLoaded } = useJsApiLoader({
+    googleMapsApiKey: process.env.REACT_APP_MAPS_API,
+    libraries,
+  });
+
+  const [gMap, setMap] = useState(/** @type google.maps.Map */ (null));
+  const [directionsResponse, setDirectionsResponse] = useState(null);
+  const [distance, setDistance] = useState("");
+  const [duration, setDuration] = useState("");
+
+  /** @type React.MutableRefObject<HTMLInputElement> */
+  const originRef = useRef();
+  /** @type React.MutableRefObject<HTMLInputElement> */
+  const destinationRef = useRef();
+
+  const calculateRoute = async () => {
+    if (originRef.current.value === "" || destinationRef.current.value === "") {
+      return;
+    }
+    // eslint-disable-next-line no-undef
+    const directionsService = new google.maps.DirectionsService();
+    const results = await directionsService.route({
+      origin: originRef.current.value,
+      destination: destinationRef.current.value,
+      // eslint-disable-next-line no-undef
+      travelMode: google.maps.TravelMode.BICYCLING,
+    });
+    setDirectionsResponse(results);
+    setDistance(results.routes[0].legs[0].distance.text);
+    setDuration(results.routes[0].legs[0].duration.text);
+  };
+
   const [pathname, setPathname] = useState("");
   const [waypoints, setWaypoints] = useState([]);
   const [paths, setPaths] = useState([]);
@@ -76,6 +120,9 @@ const App = () => {
     );
     setPathname("");
   };
+  if (!isLoaded) {
+    return <div></div>;
+  }
   return (
     <div>
       <h1>PathBuilder</h1>
@@ -108,6 +155,37 @@ const App = () => {
           </ol>
         </div>
       ))}
+      <h3>Maps</h3>
+      <div>
+        <Autocomplete>
+          <input type="text" placeholder="Destination" ref={destinationRef} />
+        </Autocomplete>
+        <Autocomplete>
+          <input type="text" placeholder="Origin" ref={originRef} />
+        </Autocomplete>
+        <button onClick={calculateRoute}>Show path!</button>
+        <div style={{ height: "100vh", width: "80%" }}>
+          <GoogleMap
+            center={center}
+            zoom={13}
+            mapContainerStyle={{ width: "100%", height: "100%" }}
+            options={{
+              zoomControl: false,
+              streetViewControl: false,
+              mapTypeControl: false,
+              fullscreenControl: false,
+            }}
+            onLoad={() => setMap(gMap)}
+          >
+            <Marker position={center} />
+            {directionsResponse && (
+              <DirectionsRenderer directions={directionsResponse} />
+            )}
+          </GoogleMap>
+        </div>
+        <p>Distance: {distance}</p>
+        <p>Duration: {duration}</p>
+      </div>
     </div>
   );
 };
