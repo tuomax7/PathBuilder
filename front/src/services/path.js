@@ -10,4 +10,5 @@ const getWaypoints = async () => {
   return response.data;
 };
 
+// eslint-disable-next-line
 export default { getPaths, getWaypoints };

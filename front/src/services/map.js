@@ -6,5 +6,5 @@ const getMapPath = async (directionsService, originRef, destinationRef) => {
     travelMode: google.maps.TravelMode.BICYCLING,
   });
 };
-
+// eslint-disable-next-line
 export default { getMapPath };
