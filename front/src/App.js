@@ -4,19 +4,15 @@ import WayPointList from "./components/WaypointList.js";
 import PathList from "./components/PathList.js";
 import Map from "./components/Map.js";
 
-import axios from "axios";
+import pathService from "./services/path.js";
 
 const App = () => {
   const [waypoints, setWaypoints] = useState([]);
   const [paths, setPaths] = useState([]);
 
   useEffect(() => {
-    axios.get("http://localhost:3001/api/paths/get").then((res) => {
-      setPaths(res.data);
-    });
-    axios.get("http://localhost:3001/api/waypoints/get").then((res) => {
-      setWaypoints(res.data);
-    });
+    pathService.getPaths().then((res) => setPaths(res));
+    pathService.getWaypoints().then((res) => setWaypoints(res));
   }, []);
 
   return (

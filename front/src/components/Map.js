@@ -1,11 +1,12 @@
 import React, { useState, useRef } from "react";
 import {
   GoogleMap,
-  Marker,
   DirectionsRenderer,
   Autocomplete,
   useJsApiLoader,
 } from "@react-google-maps/api";
+
+import mapService from "../services/map.js";
 
 const center = { lat: 60.18564, lng: 24.77457 };
 const libraries = ["places"];
@@ -30,12 +31,13 @@ const Map = () => {
     }
     // eslint-disable-next-line no-undef
     const directionsService = new google.maps.DirectionsService();
-    const results = await directionsService.route({
-      origin: originRef.current.value,
-      destination: destinationRef.current.value,
-      // eslint-disable-next-line no-undef
-      travelMode: google.maps.TravelMode.BICYCLING,
-    });
+
+    const results = await mapService.getMapPath(
+      directionsService,
+      originRef,
+      destinationRef
+    );
+
     setDirectionsResponse(results);
     setDistance(results.routes[0].legs[0].distance.text);
     setDuration(results.routes[0].legs[0].duration.text);
