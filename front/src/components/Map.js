@@ -55,7 +55,7 @@ const Map = () => {
         <input type="text" placeholder="Origin" ref={originRef} />
       </Autocomplete>
       <button onClick={calculateRoute}>Show path!</button>
-      <div style={{ height: "100vh", width: "80%" }}>
+      <div style={{ height: "50vh", width: "75vh" }}>
         <GoogleMap
           center={center}
           zoom={13}
