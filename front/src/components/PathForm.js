@@ -11,6 +11,8 @@ const possibleWaypoints = [
   { name: "Laajalahti", rating: 3 },
 ];
 
+const numberOfWaypoints = 2;
+
 const PathForm = ({ waypoints, setWaypoints, paths, setPaths }) => {
   const [pathname, setPathname] = useState("");
 
@@ -22,21 +24,23 @@ const PathForm = ({ waypoints, setWaypoints, paths, setPaths }) => {
       return randomizedWaypoint;
     };
 
-    const randomPath = {
+    const randomPathData = {
       name: pathname,
       rating: 3,
     };
 
     const randomWaypoints = [
-      ...new Set(Array.from({ length: 4 }, randomWaypoint)),
+      ...new Set(Array.from({ length: numberOfWaypoints }, randomWaypoint)),
     ];
+
+    const randomPath = [...randomWaypoints, randomWaypoints[0]];
 
     const pathInsert = await axios.post(
       "http://localhost:3001/api/paths/insert",
-      randomPath
+      randomPathData
     );
     const path = await Promise.all(
-      randomWaypoints.map(async (waypoint) => {
+      randomPath.map(async (waypoint) => {
         const waypointInsert = await axios.post(
           "http://localhost:3001/api/waypoints/insert",
           {
@@ -55,7 +59,7 @@ const PathForm = ({ waypoints, setWaypoints, paths, setPaths }) => {
     setWaypoints(concatedWaypoints);
     setPaths(
       paths.concat({
-        ...randomPath,
+        ...randomPathData,
         ID: pathInsert.data[0].pathID,
       })
     );
