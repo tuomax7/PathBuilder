@@ -44,6 +44,8 @@ const PathForm = ({ waypoints, setWaypoints, paths, setPaths }) => {
 
     const randomPath = [...randomWaypoints, randomWaypoints[0]];
 
+    //console.log(randomPath);
+
     const pathInsert = await axios.post(
       "http://localhost:3001/api/paths/insert",
       randomPathData

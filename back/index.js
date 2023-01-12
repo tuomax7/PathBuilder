@@ -36,11 +36,9 @@ app.get("/api/paths/get", (req, res) => {
 
 app.post("/api/waypoints/insert", (req, res) => {
   const name = req.body.name;
-  const rating = req.body.rating;
   const pathID = req.body.pathID;
-  const sqlInsert =
-    "INSERT INTO waypoints (name, rating, pathID) VALUES (?,?,?);";
-  db.query(sqlInsert, [name, rating, pathID], (err, result) => {});
+  const sqlInsert = "INSERT INTO waypoints (name, pathID) VALUES (?,?);";
+  db.query(sqlInsert, [name, pathID], (err, result) => {});
 
   const sqlSelect = "SELECT @@IDENTITY AS 'ID';";
   db.query(sqlSelect, (err, result) => {
@@ -50,9 +48,9 @@ app.post("/api/waypoints/insert", (req, res) => {
 
 app.post("/api/paths/insert", (req, res) => {
   const name = req.body.name;
-  const rating = req.body.rating;
-  const sqlInsert = "INSERT INTO paths (name, rating) VALUES (?,?);";
-  db.query(sqlInsert, [name, rating], (err, result) => {});
+  const likes = req.body.likes;
+  const sqlInsert = "INSERT INTO paths (name, likes) VALUES (?,?);";
+  db.query(sqlInsert, [name, likes], (err, result) => {});
 
   const sqlSelect = "SELECT @@IDENTITY AS 'pathID';";
   db.query(sqlSelect, (err, result) => {
