@@ -28,22 +28,24 @@ const PathList = ({ paths, setPaths, waypoints }) => {
   return (
     <div>
       <h3>All paths</h3>
-      {paths.map((path) => (
-        <div key={path.ID}>
-          <h4>
-            {path.name} with {path.likes} likes
-          </h4>
-          <Togglable buttonLabel="View path" ref={mapRef}>
-            <ol>
-              {waypointsOfPathID(path.ID).map((waypoint) => (
-                <li key={waypoint.ID}>{waypoint.name}</li>
-              ))}
-            </ol>
-            <Map path={waypointsOfPathID(path.ID)} />
-            <button onClick={() => handleLike(path)}>Like path!</button>
-          </Togglable>
-        </div>
-      ))}
+      {paths
+        .sort((a, b) => b.likes - a.likes)
+        .map((path) => (
+          <div key={path.ID}>
+            <h4>
+              {path.name} with {path.likes} likes
+            </h4>
+            <Togglable buttonLabel="View path" ref={mapRef}>
+              <ol>
+                {waypointsOfPathID(path.ID).map((waypoint) => (
+                  <li key={waypoint.ID}>{waypoint.name}</li>
+                ))}
+              </ol>
+              <Map path={waypointsOfPathID(path.ID)} />
+              <button onClick={() => handleLike(path)}>Like path!</button>
+            </Togglable>
+          </div>
+        ))}
     </div>
   );
 };
