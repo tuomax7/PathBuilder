@@ -24,7 +24,7 @@ const App = () => {
         setPaths={setPaths}
       />
       <WayPointList waypoints={waypoints} />
-      <PathList waypoints={waypoints} paths={paths} />
+      <PathList waypoints={waypoints} paths={paths} setPaths={setPaths} />
     </div>
   );
 };

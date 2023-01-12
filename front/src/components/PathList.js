@@ -2,12 +2,28 @@ import { createRef } from "react";
 import Togglable from "./Togglable.js";
 import Map from "./Map.js";
 
-const PathList = ({ paths, waypoints }) => {
+import axios from "axios";
+
+const PathList = ({ paths, setPaths, waypoints }) => {
   const mapRef = createRef();
 
   //KORVAA SQL-KYSELYLLÄ
   const waypointsOfPathID = (ID) =>
     waypoints.filter((waypoint) => waypoint.pathID === ID);
+
+  const handleLike = async (pathToUpdate) => {
+    const response = await axios.put(
+      `http://localhost:3001/api/paths/${pathToUpdate.ID}`,
+      pathToUpdate
+    );
+    const updatedPath = await response.data;
+
+    const updatedPaths = paths.map((path) =>
+      path.ID === pathToUpdate.ID ? updatedPath : path
+    );
+
+    setPaths(updatedPaths);
+  };
 
   return (
     <div>
@@ -24,7 +40,7 @@ const PathList = ({ paths, waypoints }) => {
               ))}
             </ol>
             <Map path={waypointsOfPathID(path.ID)} />
-            <button>Like path!</button>
+            <button onClick={() => handleLike(path)}>Like path!</button>
           </Togglable>
         </div>
       ))}

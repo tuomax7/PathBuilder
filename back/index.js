@@ -58,6 +58,17 @@ app.post("/api/paths/insert", (req, res) => {
   });
 });
 
+app.put("/api/paths/:pathID", (req, res) => {
+  const body = req.body;
+  const pathID = Number(req.params.pathID);
+  const newLikes = body.likes + 1;
+
+  const sqlUpdate = "UPDATE paths SET likes = ? WHERE ID = ?;";
+  db.query(sqlUpdate, [newLikes, pathID], (err, result) => {
+    res.send({ ...body, likes: newLikes });
+  });
+});
+
 app.listen(3001, () => {
   console.log("Running in 3001");
 });
