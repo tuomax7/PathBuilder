@@ -15,7 +15,7 @@ const PathList = ({ paths, waypoints }) => {
       {paths.map((path) => (
         <div key={path.ID}>
           <h4>
-            {path.name} of rating {path.rating}
+            {path.name} with {path.likes} likes
           </h4>
           <Togglable buttonLabel="View path" ref={mapRef}>
             <ol>
@@ -24,6 +24,7 @@ const PathList = ({ paths, waypoints }) => {
               ))}
             </ol>
             <Map path={waypointsOfPathID(path.ID)} />
+            <button>Like path!</button>
           </Togglable>
         </div>
       ))}

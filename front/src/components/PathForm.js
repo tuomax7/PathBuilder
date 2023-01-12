@@ -3,22 +3,22 @@ import React, { useState } from "react";
 import axios from "axios";
 
 const possibleWaypoints = [
-  { name: "Leppävaara", rating: 5 },
-  { name: "Tapiola", rating: 4 },
-  { name: "Otaniemi", rating: 3 },
-  { name: "Niittykumpu", rating: 3 },
-  { name: "Matinkylä", rating: 2 },
-  { name: "Laajalahti", rating: 3 },
-  { name: "Mankkaa", rating: 3 },
-  { name: "Kuitinmäki", rating: 3 },
-  { name: "Haukilahti", rating: 3 },
-  { name: "Westend", rating: 3 },
-  { name: "Lehtisaari", rating: 3 },
-  { name: "Kauniainen", rating: 3 },
-  { name: "Henttaa", rating: 3 },
-  { name: "Sinimäki", rating: 3 },
-  { name: "Ymmmersta", rating: 3 },
-  { name: "Lukupuro", rating: 3 },
+  { name: "Leppävaara" },
+  { name: "Tapiola" },
+  { name: "Otaniemi" },
+  { name: "Niittykumpu" },
+  { name: "Matinkylä" },
+  { name: "Laajalahti" },
+  { name: "Mankkaa" },
+  { name: "Kuitinmäki" },
+  { name: "Haukilahti" },
+  { name: "Westend" },
+  { name: "Lehtisaari" },
+  { name: "Kauniainen" },
+  { name: "Henttaa" },
+  { name: "Sinimäki" },
+  { name: "Ymmmersta" },
+  { name: "Lukupuro" },
 ];
 
 const numberOfWaypoints = 5;
@@ -36,7 +36,7 @@ const PathForm = ({ waypoints, setWaypoints, paths, setPaths }) => {
 
     const randomPathData = {
       name: pathname,
-      rating: 3,
+      likes: 0,
     };
 
     const randomWaypoints = [
