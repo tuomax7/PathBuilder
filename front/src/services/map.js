@@ -1,9 +1,12 @@
-const getMapPath = async (directionsService, originRef, destinationRef) => {
+const getMapPath = async (directionsService, path) => {
   return await directionsService.route({
-    origin: originRef.current.value,
-    destination: destinationRef.current.value,
+    origin: path[0].name,
+    destination: path[path.length - 1].name,
+    waypoints: path
+      .slice(1, path.length - 1)
+      .map((wp) => ({ location: wp.name, stopover: true })),
     // eslint-disable-next-line no-undef
-    travelMode: google.maps.TravelMode.BICYCLING,
+    travelMode: google.maps.TravelMode.WALKING,
   });
 };
 // eslint-disable-next-line

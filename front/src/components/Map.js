@@ -1,8 +1,7 @@
-import React, { useState, useRef } from "react";
+import React, { useState } from "react";
 import {
   GoogleMap,
   DirectionsRenderer,
-  Autocomplete,
   useJsApiLoader,
 } from "@react-google-maps/api";
 
@@ -11,7 +10,7 @@ import mapService from "../services/map.js";
 const center = { lat: 60.18564, lng: 24.77457 };
 const libraries = ["places"];
 
-const Map = () => {
+const Map = ({ path }) => {
   const { isLoaded } = useJsApiLoader({
     googleMapsApiKey: process.env.REACT_APP_MAPS_API,
     libraries,
@@ -20,27 +19,16 @@ const Map = () => {
   const [directionsResponse, setDirectionsResponse] = useState(null);
   const [distance, setDistance] = useState("");
   const [duration, setDuration] = useState("");
-  /** @type React.MutableRefObject<HTMLInputElement> */
-  const originRef = useRef();
-  /** @type React.MutableRefObject<HTMLInputElement> */
-  const destinationRef = useRef();
 
   const calculateRoute = async () => {
-    if (originRef.current.value === "" || destinationRef.current.value === "") {
-      return;
-    }
     // eslint-disable-next-line no-undef
     const directionsService = new google.maps.DirectionsService();
 
-    const results = await mapService.getMapPath(
-      directionsService,
-      originRef,
-      destinationRef
-    );
+    const results = await mapService.getMapPath(directionsService, path);
 
     setDirectionsResponse(results);
-    setDistance(results.routes[0].legs[0].distance.text);
-    setDuration(results.routes[0].legs[0].duration.text);
+    setDistance(results.routes[0].legs[0].distance);
+    setDuration(results.routes[0].legs[0].duration);
   };
   if (!isLoaded) {
     return <div>No map!</div>;
@@ -48,12 +36,6 @@ const Map = () => {
   return (
     <div>
       <h3>Maps</h3>
-      <Autocomplete>
-        <input type="text" placeholder="Destination" ref={destinationRef} />
-      </Autocomplete>
-      <Autocomplete>
-        <input type="text" placeholder="Origin" ref={originRef} />
-      </Autocomplete>
       <button onClick={calculateRoute}>Show path!</button>
       <div style={{ height: "50vh", width: "75vh" }}>
         <GoogleMap
@@ -70,12 +52,22 @@ const Map = () => {
           onLoad={() => setMap(gMap)}
         >
           {directionsResponse && (
-            <DirectionsRenderer directions={directionsResponse} />
+            <DirectionsRenderer
+              directions={directionsResponse}
+              options={{ suppressMarkers: true }}
+            />
           )}
         </GoogleMap>
       </div>
-      <p>Distance: {distance}</p>
-      <p>Duration: {duration}</p>
+      {!distance || !duration ? null : (
+        <div>
+          <p>Distance: {distance.text}</p>
+          <p>
+            Duration: {Math.round((duration.value * 0.5581395) / 60.0)} mins by
+            running
+          </p>
+        </div>
+      )}
     </div>
   );
 };

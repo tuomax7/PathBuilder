@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import PathForm from "./components/PathForm.js";
 import WayPointList from "./components/WaypointList.js";
 import PathList from "./components/PathList.js";
-import Map from "./components/Map.js";
 
 import pathService from "./services/path.js";
 
@@ -26,7 +25,6 @@ const App = () => {
       />
       <WayPointList waypoints={waypoints} />
       <PathList waypoints={waypoints} paths={paths} />
-      <Map />
     </div>
   );
 };

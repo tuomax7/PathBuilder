@@ -9,9 +9,19 @@ const possibleWaypoints = [
   { name: "Niittykumpu", rating: 3 },
   { name: "Matinkylä", rating: 2 },
   { name: "Laajalahti", rating: 3 },
+  { name: "Mankkaa", rating: 3 },
+  { name: "Kuitinmäki", rating: 3 },
+  { name: "Haukilahti", rating: 3 },
+  { name: "Westend", rating: 3 },
+  { name: "Lehtisaari", rating: 3 },
+  { name: "Kauniainen", rating: 3 },
+  { name: "Henttaa", rating: 3 },
+  { name: "Sinimäki", rating: 3 },
+  { name: "Ymmmersta", rating: 3 },
+  { name: "Lukupuro", rating: 3 },
 ];
 
-const numberOfWaypoints = 2;
+const numberOfWaypoints = 5;
 
 const PathForm = ({ waypoints, setWaypoints, paths, setPaths }) => {
   const [pathname, setPathname] = useState("");
