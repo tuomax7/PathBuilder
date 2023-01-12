@@ -12,12 +12,11 @@ const possibleWaypoints = [
   { name: "Mankkaa" },
   { name: "Kuitinmäki" },
   { name: "Haukilahti" },
-  { name: "Westend" },
   { name: "Lehtisaari" },
   { name: "Kauniainen" },
   { name: "Henttaa" },
   { name: "Sinimäki" },
-  { name: "Ymmmersta" },
+  { name: "Ymmersta" },
   { name: "Lukupuro" },
 ];
 
