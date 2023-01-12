@@ -18,6 +18,17 @@ const possibleWaypoints = [
   { name: "Sinimäki" },
   { name: "Ymmersta" },
   { name: "Lukupuro" },
+  { name: "Lyökkiniemi" },
+  { name: "Toppelund" },
+  { name: "Hietaniemi" },
+  { name: "Lukupuro" },
+  { name: "Olarinmäki" },
+  { name: "Seilimäki" },
+  { name: "Maari" },
+  { name: "Servinniemi" },
+  { name: "Ruukinranta" },
+  { name: "Klovi" },
+  { name: "Koivu-Mankkaa" },
 ];
 
 const numberOfWaypoints = 5;
