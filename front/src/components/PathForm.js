@@ -2,35 +2,9 @@ import React, { useState } from "react";
 
 import axios from "axios";
 
-const possibleWaypoints = [
-  { name: "Leppävaara" },
-  { name: "Tapiola" },
-  { name: "Otaniemi" },
-  { name: "Niittykumpu" },
-  { name: "Matinkylä" },
-  { name: "Laajalahti" },
-  { name: "Mankkaa" },
-  { name: "Kuitinmäki" },
-  { name: "Haukilahti" },
-  { name: "Lehtisaari" },
-  { name: "Kauniainen" },
-  { name: "Henttaa" },
-  { name: "Sinimäki" },
-  { name: "Ymmersta" },
-  { name: "Lukupuro" },
-  { name: "Lyökkiniemi" },
-  { name: "Toppelund" },
-  { name: "Hietaniemi" },
-  { name: "Lukupuro" },
-  { name: "Olarinmäki" },
-  { name: "Seilimäki" },
-  { name: "Servinniemi" },
-  { name: "Ruukinranta" },
-  { name: "Klovi" },
-  { name: "Koivu-Mankkaa" },
-];
+import possibleWaypoints from "../waypoints.json";
 
-const numberOfWaypoints = 4;
+const numberOfWaypoints = 3;
 
 const PathForm = ({ waypoints, setWaypoints, paths, setPaths }) => {
   const [pathname, setPathname] = useState("");

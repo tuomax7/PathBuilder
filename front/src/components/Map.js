@@ -7,7 +7,7 @@ import {
 
 import mapService from "../services/map.js";
 
-import minsToRunning from "../utils.js";
+import { minsToRunning, metersToKilometers } from "../utils.js";
 
 import axios from "axios";
 
@@ -34,7 +34,7 @@ const Map = ({ path, waypoints }) => {
       path.waypoints
     );
 
-    const distanceResponse = results.routes[0].legs[0].distance.text;
+    const distanceResponse = results.routes[0].legs[0].distance.value;
     const durationResponse = results.routes[0].legs[0].duration.value;
 
     await axios.put(`http://localhost:3001/api/paths/${path.ID}/update`, {
@@ -84,7 +84,7 @@ const Map = ({ path, waypoints }) => {
       </div>
       {!distance || !duration ? null : (
         <div>
-          <p>Distance: {distance}</p>
+          <p>Distance: {metersToKilometers(distance)} km</p>
           <p>Duration: {minsToRunning(duration)} mins by running</p>
         </div>
       )}
