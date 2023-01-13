@@ -37,7 +37,7 @@ const Map = ({ path }) => {
     <div>
       <h3>Maps</h3>
       <button onClick={calculateRoute}>Show path!</button>
-      <div style={{ height: "50vh", width: "75vh" }}>
+      <div style={{ height: "80vh", width: "80%" }}>
         <GoogleMap
           center={center}
           zoom={13}

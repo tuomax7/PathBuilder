@@ -31,7 +31,7 @@ const possibleWaypoints = [
   { name: "Koivu-Mankkaa" },
 ];
 
-const numberOfWaypoints = 5;
+const numberOfWaypoints = 4;
 
 const PathForm = ({ waypoints, setWaypoints, paths, setPaths }) => {
   const [pathname, setPathname] = useState("");
