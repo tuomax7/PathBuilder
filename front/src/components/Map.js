@@ -7,6 +7,8 @@ import {
 
 import mapService from "../services/map.js";
 
+import minsToRunning from "../utils.js";
+
 import axios from "axios";
 
 const center = { lat: 60.18564, lng: 24.77457 };
@@ -83,10 +85,7 @@ const Map = ({ path, waypoints }) => {
       {!distance || !duration ? null : (
         <div>
           <p>Distance: {distance}</p>
-          <p>
-            Duration: {Math.round((duration * 0.5581395) / 60.0)} mins by
-            running
-          </p>
+          <p>Duration: {minsToRunning(duration)} mins by running</p>
         </div>
       )}
     </div>

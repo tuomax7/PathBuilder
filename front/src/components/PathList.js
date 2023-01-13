@@ -1,8 +1,10 @@
-import { createRef, useState } from "react";
+import { createRef } from "react";
 import Togglable from "./Togglable.js";
 import Map from "./Map.js";
 
 import axios from "axios";
+
+import minsToRunning from "../utils.js";
 
 const PathList = ({ paths, setPaths, waypoints }) => {
   const mapRef = createRef();
@@ -35,6 +37,13 @@ const PathList = ({ paths, setPaths, waypoints }) => {
             <h4>
               '{path.name}' with {path.likes} likes
             </h4>
+            {path.distance && path.duration ? (
+              <p>
+                {path.distance} km, {minsToRunning(path.duration)} mins
+              </p>
+            ) : (
+              <p>Show to build path!</p>
+            )}
             <Togglable buttonLabel="Show path!" ref={mapRef}>
               Waypoints:
               <ol>
