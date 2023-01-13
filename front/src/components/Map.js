@@ -3,6 +3,7 @@ import {
   GoogleMap,
   DirectionsRenderer,
   useJsApiLoader,
+  Marker,
 } from "@react-google-maps/api";
 
 import mapService from "../services/map.js";
@@ -24,6 +25,22 @@ const Map = ({ path, waypoints }) => {
   const [directionsResponse, setDirectionsResponse] = useState(null);
   const [distance, setDistance] = useState("");
   const [duration, setDuration] = useState(0);
+  const [startPos, setStartPos] = useState(null);
+
+  const calculateStartPos = async (startName) => {
+    // eslint-disable-next-line no-undef
+    const geocoder = new google.maps.Geocoder();
+
+    const startPosRequest = await geocoder.geocode({
+      address: startName,
+    });
+
+    const startPosLat =
+      await startPosRequest.results[0].geometry.location.lat();
+    const startPosLng =
+      await startPosRequest.results[0].geometry.location.lng();
+    await setStartPos({ lat: startPosLat, lng: startPosLng });
+  };
 
   const calculateRoute = async (path) => {
     // eslint-disable-next-line no-undef
@@ -51,6 +68,7 @@ const Map = ({ path, waypoints }) => {
   useEffect(() => {
     if (isLoaded) {
       calculateRoute({ ...path, waypoints });
+      calculateStartPos(waypoints[0].name);
     }
   }, [isLoaded, path, waypoints]);
 
@@ -75,10 +93,15 @@ const Map = ({ path, waypoints }) => {
           onLoad={() => setMap(gMap)}
         >
           {directionsResponse && (
-            <DirectionsRenderer
-              directions={directionsResponse}
-              options={{ suppressMarkers: true }}
-            />
+            <div>
+              <Marker position={startPos} />
+              <DirectionsRenderer
+                directions={directionsResponse}
+                options={{
+                  suppressMarkers: true,
+                }}
+              />
+            </div>
           )}
         </GoogleMap>
       </div>

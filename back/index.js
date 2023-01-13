@@ -65,7 +65,6 @@ app.put("/api/paths/:pathID/like", (req, res) => {
 
   const sqlUpdate = "UPDATE paths SET likes = ? WHERE ID = ?;";
   db.query(sqlUpdate, [newLikes, pathID], (err, result) => {
-    console.log(result);
     res.send({ ...body, likes: newLikes });
   });
 });
