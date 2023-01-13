@@ -24,7 +24,6 @@ const possibleWaypoints = [
   { name: "Lukupuro" },
   { name: "Olarinmäki" },
   { name: "Seilimäki" },
-  { name: "Maari" },
   { name: "Servinniemi" },
   { name: "Ruukinranta" },
   { name: "Klovi" },

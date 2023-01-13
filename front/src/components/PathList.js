@@ -1,4 +1,4 @@
-import { createRef } from "react";
+import { createRef, useState } from "react";
 import Togglable from "./Togglable.js";
 import Map from "./Map.js";
 
@@ -13,7 +13,7 @@ const PathList = ({ paths, setPaths, waypoints }) => {
 
   const handleLike = async (pathToUpdate) => {
     const response = await axios.put(
-      `http://localhost:3001/api/paths/${pathToUpdate.ID}`,
+      `http://localhost:3001/api/paths/${pathToUpdate.ID}/like`,
       pathToUpdate
     );
     const updatedPath = await response.data;
@@ -33,15 +33,19 @@ const PathList = ({ paths, setPaths, waypoints }) => {
         .map((path) => (
           <div key={path.ID}>
             <h4>
-              {path.name} with {path.likes} likes
+              '{path.name}' with {path.likes} likes
             </h4>
-            <Togglable buttonLabel="View path" ref={mapRef}>
+            <Togglable buttonLabel="Show path!" ref={mapRef}>
+              Waypoints:
               <ol>
                 {waypointsOfPathID(path.ID).map((waypoint) => (
                   <li key={waypoint.ID}>{waypoint.name}</li>
                 ))}
               </ol>
-              <Map path={waypointsOfPathID(path.ID)} />
+              <Map
+                waypoints={waypointsOfPathID(path.ID)}
+                path={{ ID: path.ID, name: path.name, likes: path.likes }}
+              />
               <button onClick={() => handleLike(path)}>Like path!</button>
             </Togglable>
           </div>

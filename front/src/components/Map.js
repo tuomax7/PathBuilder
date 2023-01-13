@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   GoogleMap,
   DirectionsRenderer,
@@ -7,37 +7,58 @@ import {
 
 import mapService from "../services/map.js";
 
+import axios from "axios";
+
 const center = { lat: 60.18564, lng: 24.77457 };
 const libraries = ["places"];
 
-const Map = ({ path }) => {
+const Map = ({ path, waypoints }) => {
   const { isLoaded } = useJsApiLoader({
     googleMapsApiKey: process.env.REACT_APP_MAPS_API,
     libraries,
   });
   const [gMap, setMap] = useState(/** @type google.maps.Map */ (null));
+
   const [directionsResponse, setDirectionsResponse] = useState(null);
   const [distance, setDistance] = useState("");
-  const [duration, setDuration] = useState("");
+  const [duration, setDuration] = useState(0);
 
-  const calculateRoute = async () => {
+  const calculateRoute = async (path) => {
     // eslint-disable-next-line no-undef
     const directionsService = new google.maps.DirectionsService();
 
-    const results = await mapService.getMapPath(directionsService, path);
+    const results = await mapService.getMapPath(
+      directionsService,
+      path.waypoints
+    );
+
+    const distanceResponse = results.routes[0].legs[0].distance.text;
+    const durationResponse = results.routes[0].legs[0].duration.value;
+
+    await axios.put(`http://localhost:3001/api/paths/${path.ID}/update`, {
+      ...path,
+      distance: distanceResponse,
+      duration: durationResponse,
+    });
 
     setDirectionsResponse(results);
-    setDistance(results.routes[0].legs[0].distance);
-    setDuration(results.routes[0].legs[0].duration);
+    setDistance(distanceResponse);
+    setDuration(durationResponse);
   };
+
+  useEffect(() => {
+    if (isLoaded) {
+      calculateRoute({ ...path, waypoints });
+    }
+  }, [isLoaded, path, waypoints]);
+
   if (!isLoaded) {
     return <div>No map!</div>;
   }
+
   return (
     <div>
-      <h3>Maps</h3>
-      <button onClick={calculateRoute}>Show path!</button>
-      <div style={{ height: "80vh", width: "80%" }}>
+      <div style={{ height: "40vh", width: "80%" }}>
         <GoogleMap
           center={center}
           zoom={13}
@@ -61,9 +82,9 @@ const Map = ({ path }) => {
       </div>
       {!distance || !duration ? null : (
         <div>
-          <p>Distance: {distance.text}</p>
+          <p>Distance: {distance}</p>
           <p>
-            Duration: {Math.round((duration.value * 0.5581395) / 60.0)} mins by
+            Duration: {Math.round((duration * 0.5581395) / 60.0)} mins by
             running
           </p>
         </div>

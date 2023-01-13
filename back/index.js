@@ -58,14 +58,24 @@ app.post("/api/paths/insert", (req, res) => {
   });
 });
 
-app.put("/api/paths/:pathID", (req, res) => {
+app.put("/api/paths/:pathID/like", (req, res) => {
   const body = req.body;
   const pathID = Number(req.params.pathID);
   const newLikes = body.likes + 1;
 
   const sqlUpdate = "UPDATE paths SET likes = ? WHERE ID = ?;";
   db.query(sqlUpdate, [newLikes, pathID], (err, result) => {
+    console.log(result);
     res.send({ ...body, likes: newLikes });
+  });
+});
+app.put("/api/paths/:pathID/update", (req, res) => {
+  const body = req.body;
+  const pathID = Number(req.params.pathID);
+
+  const sqlUpdate = "UPDATE paths SET distance = ?, duration = ? WHERE ID = ?;";
+  db.query(sqlUpdate, [body.distance, body.duration, pathID], (err, result) => {
+    res.send(result);
   });
 });
 
