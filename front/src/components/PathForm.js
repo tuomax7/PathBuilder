@@ -1,19 +1,37 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 
 import axios from "axios";
+
+import { useJsApiLoader } from "@react-google-maps/api";
 
 import possibleWaypoints from "../waypoints.json";
 
 const numberOfWaypoints = 3;
 
+const libraries = ["places"];
+
 const PathForm = ({ waypoints, setWaypoints, paths, setPaths }) => {
+  const { isLoaded } = useJsApiLoader({
+    googleMapsApiKey: process.env.REACT_APP_MAPS_API,
+    libraries,
+  });
+
   const [pathname, setPathname] = useState("");
+  const [startName, setStartName] = useState("");
 
   const generate = async (e) => {
     e.preventDefault();
+
+    const start = { name: startName };
+
     const randomWaypoint = () => {
-      const randIndex = Math.floor(Math.random() * possibleWaypoints.length);
-      const randomizedWaypoint = possibleWaypoints[randIndex];
+      const waypointsWithoutStart = possibleWaypoints.filter(
+        (wp) => wp.name !== start.name
+      );
+      const randIndex = Math.floor(
+        Math.random() * waypointsWithoutStart.length - 1
+      );
+      const randomizedWaypoint = waypointsWithoutStart[randIndex];
       return randomizedWaypoint;
     };
 
@@ -26,9 +44,7 @@ const PathForm = ({ waypoints, setWaypoints, paths, setPaths }) => {
       ...new Set(Array.from({ length: numberOfWaypoints }, randomWaypoint)),
     ];
 
-    const randomPath = [...randomWaypoints, randomWaypoints[0]];
-
-    //console.log(randomPath);
+    const randomPath = [start, ...randomWaypoints, start];
 
     const pathInsert = await axios.post(
       "http://localhost:3001/api/paths/insert",
@@ -60,15 +76,28 @@ const PathForm = ({ waypoints, setWaypoints, paths, setPaths }) => {
     );
     setPathname("");
   };
+  if (!isLoaded) {
+    return <div>Google maps loading...</div>;
+  }
   return (
     <form onSubmit={generate}>
       <input
         type="text"
         name="pathname"
-        placeholder="name your path..."
+        placeholder="give your path a name..."
         onChange={(e) => setPathname(e.target.value)}
         value={pathname}
       />
+      <select id="dropdown" onChange={(e) => setStartName(e.target.value)}>
+        {possibleWaypoints
+          .sort((a, b) => a.name.localeCompare(b.name))
+          .sort()
+          .map((wp) => (
+            <option key={wp.name} value={wp.name}>
+              {wp.name}
+            </option>
+          ))}
+      </select>
       <button type="submit">Generate path!</button>
     </form>
   );
