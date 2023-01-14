@@ -78,7 +78,7 @@ const Map = ({ path, waypoints }) => {
 
   return (
     <div>
-      <div style={{ height: "40vh", width: "80%" }}>
+      <div style={{ height: "50vh", width: "80%" }}>
         <GoogleMap
           center={center}
           zoom={13}

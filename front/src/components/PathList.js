@@ -6,6 +6,19 @@ import axios from "axios";
 
 import { minsToRunning, metersToKilometers } from "../utils.js";
 
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableRow,
+  Paper,
+  RadioGroup,
+  FormControlLabel,
+  Radio,
+  Button,
+} from "@mui/material";
+
 const PathList = ({ paths, setPaths, waypoints }) => {
   const mapRef = createRef();
 
@@ -40,59 +53,76 @@ const PathList = ({ paths, setPaths, waypoints }) => {
   return (
     <div>
       <div>
-        Sort by:
-        <input
-          defaultChecked
-          type="radio"
-          id="likes"
-          name="sorter"
-          onChange={() => setSortBy("likes")}
-        />
-        <label htmlFor="likes">Likes</label>
-        <input
-          type="radio"
-          name="sorter"
-          id="distance"
-          onChange={() => setSortBy("distance")}
-        />
-        <label htmlFor="distance">Distance</label>
-        <input
-          type="radio"
-          name="sorter"
-          id="duration"
-          onChange={() => setSortBy("duration")}
-        />
-        <label htmlFor="duration">Duration</label>
+        <h3>Sort by:</h3>
+        <RadioGroup
+          style={{ display: "inline" }}
+          defaultValue="likes"
+          name="radio-buttons-group"
+        >
+          <FormControlLabel
+            defaultChecked
+            value="likes"
+            control={<Radio />}
+            label="Likes"
+            onChange={() => setSortBy("likes")}
+          />
+          <FormControlLabel
+            value="distance"
+            control={<Radio />}
+            label="Distance"
+            onChange={() => setSortBy("distance")}
+          />
+          <FormControlLabel
+            value="duration"
+            control={<Radio />}
+            label="Duration"
+            onChange={() => setSortBy("duration")}
+          />
+        </RadioGroup>
       </div>
       <h3>All paths</h3>
-      {sortedPaths().map((path) => (
-        <div key={path.ID}>
-          <h4>
-            '{path.name}' with {path.likes} likes
-          </h4>
-          {path.distance && path.duration ? (
-            <p>
-              {metersToKilometers(path.distance)} km,{" "}
-              {minsToRunning(path.duration)} mins
-            </p>
-          ) : (
-            <p>Show to build path!</p>
-          )}
-          <Togglable buttonLabel="Show path!" ref={mapRef}>
-            Waypoints:
-            <ol>
-              {waypointsOfPathID(path.ID).map((waypoint) => (
-                <li key={waypoint.ID}>{waypoint.name}</li>
-              ))}
-            </ol>
-            <Map
-              waypoints={waypointsOfPathID(path.ID)}
-              path={{ ID: path.ID, name: path.name, likes: path.likes }}
-            />
-            <button onClick={() => handleLike(path)}>Like path!</button>
-          </Togglable>
-        </div>
-      ))}
+      <TableContainer component={Paper}>
+        <Table>
+          <TableBody>
+            {sortedPaths().map((path) => (
+              <TableRow key={path.ID}>
+                <TableCell>
+                  <h3>
+                    '{path.name}' with {path.likes} likes
+                  </h3>
+                  {path.distance && path.duration ? (
+                    <p>
+                      {metersToKilometers(path.distance)} km,{" "}
+                      {minsToRunning(path.duration)} mins
+                    </p>
+                  ) : (
+                    <p>Show to build path!</p>
+                  )}
+                  <Togglable buttonLabel="Show path!" ref={mapRef}>
+                    Waypoints:
+                    <ol>
+                      {waypointsOfPathID(path.ID).map((waypoint) => (
+                        <li key={waypoint.ID}>{waypoint.name}</li>
+                      ))}
+                    </ol>
+                    <Map
+                      waypoints={waypointsOfPathID(path.ID)}
+                      path={{ ID: path.ID, name: path.name, likes: path.likes }}
+                    />
+                    <Button
+                      variant="contained"
+                      color="success"
+                      onClick={() => handleLike(path)}
+                    >
+                      Like path!
+                    </Button>
+                  </Togglable>
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
     </div>
   );
 };

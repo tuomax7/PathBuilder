@@ -1,10 +1,11 @@
-import React, { useState, useRef } from "react";
+import React, { useState } from "react";
 
 import axios from "axios";
 
 import { useJsApiLoader } from "@react-google-maps/api";
 
 import possibleWaypoints from "../waypoints.json";
+import { TextField, Button, Select, MenuItem } from "@mui/material";
 
 const numberOfWaypoints = 3;
 
@@ -81,24 +82,37 @@ const PathForm = ({ waypoints, setWaypoints, paths, setPaths }) => {
   }
   return (
     <form onSubmit={generate}>
-      <input
+      <TextField
         type="text"
         name="pathname"
         placeholder="give your path a name..."
         onChange={(e) => setPathname(e.target.value)}
         value={pathname}
+        style={{ margin: "5px" }}
       />
-      <select id="dropdown" onChange={(e) => setStartName(e.target.value)}>
+      <Select
+        id="dropdown"
+        defaultValue="Haukilahti"
+        onChange={(e) => setStartName(e.target.value)}
+        style={{ margin: "5px" }}
+      >
         {possibleWaypoints
           .sort((a, b) => a.name.localeCompare(b.name))
           .sort()
           .map((wp) => (
-            <option key={wp.name} value={wp.name}>
+            <MenuItem key={wp.name} value={wp.name}>
               {wp.name}
-            </option>
+            </MenuItem>
           ))}
-      </select>
-      <button type="submit">Generate path!</button>
+      </Select>
+      <Button
+        variant="contained"
+        color="primary"
+        type="submit"
+        style={{ margin: "5px" }}
+      >
+        Generate path!
+      </Button>
     </form>
   );
 };
