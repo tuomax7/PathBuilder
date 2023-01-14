@@ -46,6 +46,7 @@ const PathForm = ({ waypoints, setWaypoints, paths, setPaths }) => {
     ];
 
     const randomPath = [start, ...randomWaypoints, start];
+    console.log(randomWaypoints);
 
     const pathInsert = await axios.post(
       "http://localhost:3001/api/paths/insert",
@@ -92,10 +93,11 @@ const PathForm = ({ waypoints, setWaypoints, paths, setPaths }) => {
       />
       <Select
         id="dropdown"
-        defaultValue="Haukilahti"
+        defaultValue="choose"
         onChange={(e) => setStartName(e.target.value)}
         style={{ margin: "5px" }}
       >
+        <MenuItem value="choose">Choose origin</MenuItem>
         {possibleWaypoints
           .sort((a, b) => a.name.localeCompare(b.name))
           .sort()
