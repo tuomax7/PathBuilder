@@ -1,16 +1,12 @@
 import React, { useState, useEffect } from "react";
-import {
-  GoogleMap,
-  DirectionsRenderer,
-  useJsApiLoader,
-  Marker,
-} from "@react-google-maps/api";
+import { useJsApiLoader } from "@react-google-maps/api";
 
 import mapService from "../services/map.js";
 
+import GMap from "./GMap.js";
+
 import { minsToRunning, metersToKilometers } from "../utils.js";
 
-const center = { lat: 60.18564, lng: 24.77457 };
 const libraries = ["places"];
 
 const Map = ({ path, waypoints }) => {
@@ -64,31 +60,12 @@ const Map = ({ path, waypoints }) => {
   return (
     <div>
       <div style={{ height: "50vh", width: "80%" }}>
-        <GoogleMap
-          center={center}
-          zoom={13}
-          mapContainerStyle={{ width: "100%", height: "100%" }}
-          options={{
-            zoomControl: false,
-            streetViewControl: false,
-            mapTypeControl: false,
-            fullscreenControl: false,
-            mapId: process.env.REACT_APP_MAPS_ID,
-          }}
-          onLoad={() => setMap(gMap)}
-        >
-          {directionsResponse && (
-            <div>
-              <Marker position={startPos} />
-              <DirectionsRenderer
-                directions={directionsResponse}
-                options={{
-                  suppressMarkers: true,
-                }}
-              />
-            </div>
-          )}
-        </GoogleMap>
+        <GMap
+          setMap={setMap}
+          gMap={gMap}
+          directionsResponse={directionsResponse}
+          startPos={startPos}
+        />
       </div>
       {!path.distance || !path.duration ? null : (
         <div>

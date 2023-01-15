@@ -5,6 +5,7 @@ import axios from "axios";
 import { useJsApiLoader } from "@react-google-maps/api";
 
 import mapService from "../services/map.js";
+import pathService from "../services/path.js";
 
 import possibleWaypoints from "../waypoints.json";
 import { TextField, Button, Select, MenuItem } from "@mui/material";
@@ -32,7 +33,7 @@ const PathForm = ({ waypoints, setWaypoints, paths, setPaths }) => {
         (wp) => wp.name !== start.name
       );
       const randIndex = Math.floor(
-        Math.random() * waypointsWithoutStart.length - 1
+        Math.random() * (waypointsWithoutStart.length - 1)
       );
       const randomizedWaypoint = waypointsWithoutStart[randIndex];
       return randomizedWaypoint;
@@ -57,24 +58,18 @@ const PathForm = ({ waypoints, setWaypoints, paths, setPaths }) => {
     const distanceResponse = results.routes[0].legs[0].distance.value;
     const durationResponse = results.routes[0].legs[0].duration.value;
 
-    const pathInsert = await axios.post(
-      "http://localhost:3001/api/paths/insert",
-      {
-        ...randomPathData,
-        waypoints: randomPath,
-        distance: distanceResponse,
-        duration: durationResponse,
-      }
+    const pathInsert = await pathService.createPath(
+      randomPathData,
+      distanceResponse,
+      durationResponse,
+      randomPath
     );
 
     const path = await Promise.all(
       randomPath.map(async (waypoint) => {
-        const waypointInsert = await axios.post(
-          "http://localhost:3001/api/waypoints/insert",
-          {
-            ...waypoint,
-            pathID: pathInsert.data[0].pathID,
-          }
+        const waypointInsert = await pathService.createWaypoint(
+          waypoint,
+          pathInsert
         );
         return {
           ...waypoint,
