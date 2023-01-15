@@ -4,11 +4,17 @@ An app for generating randomized routes for runs with Google Maps. Built using R
 
 ## Instructions to run locally
 
-Run in the root of the project:
+To install needed packages: (root directory)
 
 ### `npm install`
 
+To run the client: (front directory)
+
 ### `npm start`
+
+To run the server: (back directory)
+
+### `npm run server`
 
 This runs the app in the development mode.\
 Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
