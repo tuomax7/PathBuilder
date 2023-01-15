@@ -49,8 +49,11 @@ app.post("/api/waypoints/insert", (req, res) => {
 app.post("/api/paths/insert", (req, res) => {
   const name = req.body.name;
   const likes = req.body.likes;
-  const sqlInsert = "INSERT INTO paths (name, likes) VALUES (?,?);";
-  db.query(sqlInsert, [name, likes], (err, result) => {});
+  const distance = req.body.distance;
+  const duration = req.body.duration;
+  const sqlInsert =
+    "INSERT INTO paths (name, likes, distance, duration) VALUES (?,?,?,?);";
+  db.query(sqlInsert, [name, likes, distance, duration], (err, result) => {});
 
   const sqlSelect = "SELECT @@IDENTITY AS 'pathID';";
   db.query(sqlSelect, (err, result) => {

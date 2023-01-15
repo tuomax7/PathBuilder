@@ -10,8 +10,6 @@ import mapService from "../services/map.js";
 
 import { minsToRunning, metersToKilometers } from "../utils.js";
 
-import axios from "axios";
-
 const center = { lat: 60.18564, lng: 24.77457 };
 const libraries = ["places"];
 
@@ -23,8 +21,6 @@ const Map = ({ path, waypoints }) => {
   const [gMap, setMap] = useState(/** @type google.maps.Map */ (null));
 
   const [directionsResponse, setDirectionsResponse] = useState(null);
-  const [distance, setDistance] = useState("");
-  const [duration, setDuration] = useState(0);
   const [startPos, setStartPos] = useState(null);
 
   const calculateStartPos = async (startName) => {
@@ -51,18 +47,7 @@ const Map = ({ path, waypoints }) => {
       path.waypoints
     );
 
-    const distanceResponse = results.routes[0].legs[0].distance.value;
-    const durationResponse = results.routes[0].legs[0].duration.value;
-
-    await axios.put(`http://localhost:3001/api/paths/${path.ID}/update`, {
-      ...path,
-      distance: distanceResponse,
-      duration: durationResponse,
-    });
-
     setDirectionsResponse(results);
-    setDistance(distanceResponse);
-    setDuration(durationResponse);
   };
 
   useEffect(() => {
@@ -105,10 +90,10 @@ const Map = ({ path, waypoints }) => {
           )}
         </GoogleMap>
       </div>
-      {!distance || !duration ? null : (
+      {!path.distance || !path.duration ? null : (
         <div>
-          <p>Distance: {metersToKilometers(distance)} km</p>
-          <p>Duration: {minsToRunning(duration)} mins by running</p>
+          <p>Distance: {metersToKilometers(path.distance)} km</p>
+          <p>Duration: {minsToRunning(path.duration)} mins by running</p>
         </div>
       )}
     </div>

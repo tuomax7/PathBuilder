@@ -4,6 +4,8 @@ import axios from "axios";
 
 import { useJsApiLoader } from "@react-google-maps/api";
 
+import mapService from "../services/map.js";
+
 import possibleWaypoints from "../waypoints.json";
 import { TextField, Button, Select, MenuItem } from "@mui/material";
 
@@ -18,7 +20,7 @@ const PathForm = ({ waypoints, setWaypoints, paths, setPaths }) => {
   });
 
   const [pathname, setPathname] = useState("");
-  const [startName, setStartName] = useState("");
+  const [startName, setStartName] = useState("Haukilahti");
 
   const generate = async (e) => {
     e.preventDefault();
@@ -46,12 +48,25 @@ const PathForm = ({ waypoints, setWaypoints, paths, setPaths }) => {
     ];
 
     const randomPath = [start, ...randomWaypoints, start];
-    console.log(randomWaypoints);
+
+    // eslint-disable-next-line no-undef
+    const directionsService = new google.maps.DirectionsService();
+
+    const results = await mapService.getMapPath(directionsService, randomPath);
+
+    const distanceResponse = results.routes[0].legs[0].distance.value;
+    const durationResponse = results.routes[0].legs[0].duration.value;
 
     const pathInsert = await axios.post(
       "http://localhost:3001/api/paths/insert",
-      randomPathData
+      {
+        ...randomPathData,
+        waypoints: randomPath,
+        distance: distanceResponse,
+        duration: durationResponse,
+      }
     );
+
     const path = await Promise.all(
       randomPath.map(async (waypoint) => {
         const waypointInsert = await axios.post(
@@ -74,6 +89,8 @@ const PathForm = ({ waypoints, setWaypoints, paths, setPaths }) => {
       paths.concat({
         ...randomPathData,
         ID: pathInsert.data[0].pathID,
+        distance: distanceResponse,
+        duration: durationResponse,
       })
     );
     setPathname("");
@@ -86,18 +103,20 @@ const PathForm = ({ waypoints, setWaypoints, paths, setPaths }) => {
       <TextField
         type="text"
         name="pathname"
-        placeholder="give your path a name..."
+        placeholder="name your path..."
         onChange={(e) => setPathname(e.target.value)}
         value={pathname}
         style={{ margin: "5px" }}
       />
       <Select
         id="dropdown"
-        defaultValue="choose"
+        defaultValue="origin"
         onChange={(e) => setStartName(e.target.value)}
         style={{ margin: "5px" }}
       >
-        <MenuItem value="choose">Choose origin</MenuItem>
+        <MenuItem disabled value="origin">
+          Choose start
+        </MenuItem>
         {possibleWaypoints
           .sort((a, b) => a.name.localeCompare(b.name))
           .sort()

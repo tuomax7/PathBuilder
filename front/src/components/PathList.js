@@ -81,48 +81,50 @@ const PathList = ({ paths, setPaths, waypoints }) => {
         </RadioGroup>
       </div>
       <h3>All paths</h3>
-      <TableContainer component={Paper}>
-        <Table>
-          <TableBody>
-            {sortedPaths().map((path) => (
-              <TableRow key={path.ID}>
-                <TableCell>
-                  <h3>
-                    '{path.name}' with {path.likes} likes
-                  </h3>
-                  {path.distance && path.duration ? (
-                    <p>
-                      {metersToKilometers(path.distance)} km,{" "}
-                      {minsToRunning(path.duration)} mins
-                    </p>
-                  ) : (
-                    <p>Show to build path!</p>
-                  )}
-                  <Togglable buttonLabel="Show path!" ref={mapRef}>
-                    Waypoints:
-                    <ol>
-                      {waypointsOfPathID(path.ID).map((waypoint) => (
-                        <li key={waypoint.ID}>{waypoint.name}</li>
-                      ))}
-                    </ol>
-                    <Map
-                      waypoints={waypointsOfPathID(path.ID)}
-                      path={{ ID: path.ID, name: path.name, likes: path.likes }}
-                    />
-                    <Button
-                      variant="contained"
-                      color="success"
-                      onClick={() => handleLike(path)}
-                    >
-                      Like path!
-                    </Button>
-                  </Togglable>
-                </TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </TableContainer>
+      {sortedPaths().length === 0 ? (
+        <p>Start by generating a path!</p>
+      ) : (
+        <TableContainer component={Paper}>
+          <Table>
+            <TableBody>
+              {sortedPaths().map((path) => (
+                <TableRow key={path.ID}>
+                  <TableCell>
+                    <h3>
+                      '{path.name}' with {path.likes} likes
+                    </h3>
+                    {path.distance && path.duration ? (
+                      <p>
+                        {metersToKilometers(path.distance)} km,{" "}
+                        {minsToRunning(path.duration)} mins
+                      </p>
+                    ) : (
+                      <p>Show to build path!</p>
+                    )}
+                    <Togglable buttonLabel="Show path!" ref={mapRef}>
+                      Waypoints:
+                      <ol>
+                        {waypointsOfPathID(path.ID).map((waypoint) => (
+                          <li key={waypoint.ID}>{waypoint.name}</li>
+                        ))}
+                      </ol>
+                      <Map waypoints={waypointsOfPathID(path.ID)} path={path} />
+                      <Button
+                        variant="contained"
+                        color="success"
+                        onClick={() => handleLike(path)}
+                        style={{ marginRight: "10px" }}
+                      >
+                        Like!
+                      </Button>
+                    </Togglable>
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </TableContainer>
+      )}
     </div>
   );
 };
