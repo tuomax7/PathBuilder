@@ -1,7 +1,5 @@
 import React, { useState } from "react";
 
-import axios from "axios";
-
 import { useJsApiLoader } from "@react-google-maps/api";
 
 import mapService from "../services/map.js";

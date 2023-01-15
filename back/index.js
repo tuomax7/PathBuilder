@@ -1,6 +1,8 @@
 const express = require("express");
 const app = express();
 
+app.use(express.static("build"));
+
 const bodyParser = require("body-parser");
 
 const cors = require("cors");
@@ -81,6 +83,7 @@ app.put("/api/paths/:pathID/update", (req, res) => {
   });
 });
 
-app.listen(3001, () => {
-  console.log("Running in 3001");
+const PORT = process.env.PORT || 3001;
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
 });

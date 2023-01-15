@@ -12,7 +12,10 @@ const App = () => {
   const [paths, setPaths] = useState([]);
 
   useEffect(() => {
-    pathService.getPaths().then((res) => setPaths(res));
+    pathService.getPaths().then((res) => {
+      console.log(res);
+      setPaths(res);
+    });
     pathService.getWaypoints().then((res) => setWaypoints(res));
   }, []);
 

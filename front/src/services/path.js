@@ -1,12 +1,12 @@
 import axios from "axios";
 
 const getPaths = async () => {
-  const response = await axios.get("http://localhost:3001/api/paths/get");
+  const response = await axios.get("/api/paths/get");
   return response.data;
 };
 
 const getWaypoints = async () => {
-  const response = await axios.get("http://localhost:3001/api/waypoints/get");
+  const response = await axios.get("/api/waypoints/get");
   return response.data;
 };
 
@@ -16,7 +16,7 @@ const createPath = async (
   durationResponse,
   randomPath
 ) => {
-  const response = await axios.post("http://localhost:3001/api/paths/insert", {
+  const response = await axios.post("/api/paths/insert", {
     ...randomPathData,
     waypoints: randomPath,
     distance: distanceResponse,
@@ -27,13 +27,10 @@ const createPath = async (
 };
 
 const createWaypoint = async (waypoint, pathInsert) => {
-  const response = await axios.post(
-    "http://localhost:3001/api/waypoints/insert",
-    {
-      ...waypoint,
-      pathID: pathInsert.data[0].pathID,
-    }
-  );
+  const response = await axios.post("/api/waypoints/insert", {
+    ...waypoint,
+    pathID: pathInsert.data[0].pathID,
+  });
   return response;
 };
 
