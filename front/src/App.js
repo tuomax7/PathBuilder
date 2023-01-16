@@ -24,7 +24,7 @@ const App = () => {
     <Container
       style={{
         width: "75%",
-        height: "100vh",
+        height: "100%",
         backgroundColor: "white",
         borderRadius: "10px",
       }}
