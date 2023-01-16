@@ -19,7 +19,6 @@ const db = mysql.createConnection({
   user: dotenv.USER,
   password: dotenv.PASSWORD,
   database: dotenv.DATABASE,
-  socketPath: "/tmp/mysql.sock",
 });
 
 app.get("/api/waypoints/get", (req, res) => {
