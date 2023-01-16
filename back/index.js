@@ -10,15 +10,15 @@ app.use(cors());
 
 app.use(express.json());
 app.use(bodyParser.urlencoded({ extended: true }));
-
-require("dotenv").config();
+const dotenv = require("dotenv").config().parsed;
 
 const mysql = require("mysql");
+
 const db = mysql.createConnection({
-  host: "localhost",
-  user: process.env.USERNAME,
-  password: process.env.USERPASS,
-  database: "pathbuilder",
+  host: dotenv.HOST,
+  user: dotenv.USER,
+  password: dotenv.PASSWORD,
+  database: dotenv.DATABASE,
   socketPath: "/tmp/mysql.sock",
 });
 

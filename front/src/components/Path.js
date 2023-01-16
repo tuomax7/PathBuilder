@@ -11,12 +11,13 @@ import { TableCell, TableRow, Button } from "@mui/material";
 const Path = ({ waypoints, paths, setPaths, path }) => {
   const mapRef = createRef();
   //KORVAA SQL-KYSELYLLÄ
-  const waypointsOfPathID = (ID) =>
-    waypoints.filter((waypoint) => waypoint.pathID === ID);
+  const waypointsOfPathID = (ID) => {
+    return waypoints.filter((waypoint) => waypoint.pathID === ID);
+  };
 
   const handleLike = async (pathToUpdate) => {
     const response = await axios.put(
-      `http://localhost:3001/api/paths/${pathToUpdate.ID}/like`,
+      `/api/paths/${pathToUpdate.ID}/like`,
       pathToUpdate
     );
     const updatedPath = await response.data;

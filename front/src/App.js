@@ -13,10 +13,11 @@ const App = () => {
 
   useEffect(() => {
     pathService.getPaths().then((res) => {
-      console.log(res);
       setPaths(res);
     });
-    pathService.getWaypoints().then((res) => setWaypoints(res));
+    pathService.getWaypoints().then((res) => {
+      setWaypoints(res);
+    });
   }, []);
 
   return (
