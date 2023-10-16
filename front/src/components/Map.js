@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { useJsApiLoader } from "@react-google-maps/api";
 
+import { Button } from "@mui/material";
+
 import mapService from "../services/map.js";
 
 import GMap from "./GMap.js";
@@ -14,10 +16,10 @@ const Map = ({ path, waypoints }) => {
     googleMapsApiKey: process.env.REACT_APP_MAPS_API,
     libraries,
   });
-  const [gMap, setMap] = useState(/** @type google.maps.Map */ (null));
 
   const [directionsResponse, setDirectionsResponse] = useState(null);
   const [startPos, setStartPos] = useState(null);
+  const [directionsURL, setDirectionsURL] = useState("");
 
   const calculateStartPos = async (startName) => {
     // eslint-disable-next-line no-undef
@@ -46,26 +48,34 @@ const Map = ({ path, waypoints }) => {
     setDirectionsResponse(results);
   };
 
+  const calculateDirectionsURL = (waypoints) => {
+    const origin = waypoints[0].name;
+    const waypointString = waypoints
+      .slice(1, waypoints.length - 1)
+      .map((wp) => wp.name)
+      .join("|");
+
+    setDirectionsURL(
+      `https://www.google.com/maps/dir/?api=1&origin=${origin}&destination=${origin}&waypoints=${waypointString}&travelmode=walking`
+    );
+  };
+
   useEffect(() => {
     if (isLoaded) {
       calculateRoute({ ...path, waypoints });
       calculateStartPos(waypoints[0].name);
+      calculateDirectionsURL(waypoints);
     }
-  }, [isLoaded, path, waypoints]);
+  }, [isLoaded, path, waypoints, directionsURL]);
 
   if (!isLoaded) {
     return <div>No map!</div>;
   }
 
   return (
-    <div>
+    <div style={{ marginBottom: 20 }}>
       <div style={{ height: "50vh", width: "80%" }}>
-        <GMap
-          setMap={setMap}
-          gMap={gMap}
-          directionsResponse={directionsResponse}
-          startPos={startPos}
-        />
+        <GMap directionsResponse={directionsResponse} startPos={startPos} />
       </div>
       {!path.distance || !path.duration ? null : (
         <div>
@@ -73,6 +83,15 @@ const Map = ({ path, waypoints }) => {
           <p>Duration: {minsToRunning(path.duration)} mins by running</p>
         </div>
       )}
+
+      <Button
+        href={directionsURL}
+        target="_blank"
+        rel="noreferrer"
+        variant="outlined"
+      >
+        Open in Google Maps!
+      </Button>
     </div>
   );
 };

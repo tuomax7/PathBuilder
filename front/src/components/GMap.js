@@ -4,7 +4,7 @@ import { GoogleMap, DirectionsRenderer, Marker } from "@react-google-maps/api";
 
 const center = { lat: 60.18564, lng: 24.77457 };
 
-const GMap = ({ directionsResponse, setMap, gMap, startPos }) => {
+const GMap = ({ directionsResponse, startPos }) => {
   return (
     <GoogleMap
       center={center}
@@ -17,7 +17,6 @@ const GMap = ({ directionsResponse, setMap, gMap, startPos }) => {
         fullscreenControl: false,
         mapId: process.env.REACT_APP_MAPS_ID,
       }}
-      onLoad={() => setMap(gMap)}
     >
       {directionsResponse && (
         <div>
