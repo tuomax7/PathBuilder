@@ -14,35 +14,43 @@ import denv from "dotenv";
 
 const dotenv = denv.config().parsed;
 
-const mysql = require("mysql");
+import mysql from "mysql";
 
-let db;
+import { Path } from "../types/types";
 
-const db_config = {
-  host: dotenv.HOST,
-  user: dotenv.USER,
-  password: dotenv.PASSWORD,
-  database: dotenv.DATABASE,
-};
+let db: mysql.Connection;
 
 function handleDisconnect() {
-  db = mysql.createConnection(db_config);
+  if (dotenv) {
+    const db_config = {
+      host: dotenv.HOST,
+      user: dotenv.USER,
+      password: dotenv.PASSWORD,
+      database: dotenv.DATABASE,
+    };
 
-  db.connect(function (err) {
-    if (err) {
-      console.log("error when connecting to db:", err);
-      setTimeout(handleDisconnect, 2000);
-    }
-  });
+    db = mysql.createConnection(db_config);
 
-  db.on("error", function (err) {
-    console.log("db error", err);
-    if (err.code === "PROTOCOL_CONNECTION_LOST") {
-      handleDisconnect();
-    } else {
-      throw err;
-    }
-  });
+    db.connect(function (err) {
+      if (err) {
+        console.log("error when connecting to db:", err);
+        setTimeout(handleDisconnect, 2000);
+      }
+    });
+
+    db.on("error", function (err) {
+      console.log("db error", err);
+      if (err.code === "PROTOCOL_CONNECTION_LOST") {
+        handleDisconnect();
+      } else {
+        throw err;
+      }
+    });
+  } else {
+    console.log(
+      "error when connecting to db: dotenv configurations are not defined"
+    );
+  }
 }
 
 handleDisconnect();
@@ -62,8 +70,8 @@ app.get("/api/paths/get", (req, res) => {
 });
 
 app.post("/api/waypoints/insert", (req, res) => {
-  const name = req.body.name;
-  const pathID = req.body.pathID;
+  const name: string = req.body.name;
+  const pathID: number = req.body.pathID;
   const sqlInsert = "INSERT INTO waypoints (name, pathID) VALUES (?,?);";
   db.query(sqlInsert, [name, pathID], (err, result) => {});
 
@@ -74,10 +82,10 @@ app.post("/api/waypoints/insert", (req, res) => {
 });
 
 app.post("/api/paths/insert", (req, res) => {
-  const name = req.body.name;
-  const likes = req.body.likes;
-  const distance = req.body.distance;
-  const duration = req.body.duration;
+  const name: string = req.body.name;
+  const likes: number = req.body.likes;
+  const distance: number = req.body.distance;
+  const duration: number = req.body.duration;
   const sqlInsert =
     "INSERT INTO paths (name, likes, distance, duration) VALUES (?,?,?,?);";
   db.query(sqlInsert, [name, likes, distance, duration], (err, result) => {});
@@ -89,22 +97,13 @@ app.post("/api/paths/insert", (req, res) => {
 });
 
 app.put("/api/paths/:pathID/like", (req, res) => {
-  const body = req.body;
-  const pathID = Number(req.params.pathID);
-  const newLikes = body.likes + 1;
+  const body: Path = req.body;
+  const pathID: number = Number(req.params.pathID);
+  const newLikes: number = body.likes + 1;
 
   const sqlUpdate = "UPDATE paths SET likes = ? WHERE ID = ?;";
   db.query(sqlUpdate, [newLikes, pathID], (err, result) => {
     res.send({ ...body, likes: newLikes });
-  });
-});
-app.put("/api/paths/:pathID/update", (req, res) => {
-  const body = req.body;
-  const pathID = Number(req.params.pathID);
-
-  const sqlUpdate = "UPDATE paths SET distance = ?, duration = ? WHERE ID = ?;";
-  db.query(sqlUpdate, [body.distance, body.duration, pathID], (err, result) => {
-    res.send(result);
   });
 });
 
