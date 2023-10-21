@@ -2,7 +2,7 @@
 
 [https://pathbuilder.herokuapp.com/](https://pathbuilder.herokuapp.com/)
 
-An app for generating randomized routes for runs with Google Maps. Built using React, Node and MySQL. Tuomas Nummela 7.1.2022
+An app for generating randomized routes for runs with Google Maps. Built using React, Node (with TypeScript) and MySQL. Tuomas Nummela 7.1.2022
 
 ## Instructions to run locally
 

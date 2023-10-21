@@ -1,16 +1,18 @@
-const express = require("express");
+import express from "express";
 const app = express();
 
 app.use(express.static("build"));
 
-const bodyParser = require("body-parser");
+import bodyParser from "body-parser";
 
-const cors = require("cors");
+import cors from "cors";
 app.use(cors());
 
 app.use(express.json());
 app.use(bodyParser.urlencoded({ extended: true }));
-const dotenv = require("dotenv").config().parsed;
+import denv from "dotenv";
+
+const dotenv = denv.config().parsed;
 
 const mysql = require("mysql");
 
