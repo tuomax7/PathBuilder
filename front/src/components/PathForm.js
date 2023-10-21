@@ -5,10 +5,10 @@ import { useJsApiLoader } from "@react-google-maps/api";
 import mapService from "../services/map.js";
 import pathService from "../services/path.js";
 
+import generatePath from "../utils/pathgen.js";
 import possibleWaypoints from "../waypoints.json";
-import { TextField, Button, Select, MenuItem } from "@mui/material";
 
-const numberOfWaypoints = 3;
+import { TextField, Button, Select, MenuItem } from "@mui/material";
 
 const libraries = ["places"];
 
@@ -19,34 +19,17 @@ const PathForm = ({ waypoints, setWaypoints, paths, setPaths }) => {
   });
 
   const [pathname, setPathname] = useState("");
-  const [startName, setStartName] = useState("Haukilahti");
+  const [startName, setStartName] = useState("");
 
   const generate = async (e) => {
     e.preventDefault();
-
-    const start = { name: startName };
-
-    const randomWaypoint = () => {
-      const waypointsWithoutStart = possibleWaypoints.filter(
-        (wp) => wp.name !== start.name
-      );
-      const randIndex = Math.floor(
-        Math.random() * (waypointsWithoutStart.length - 1)
-      );
-      const randomizedWaypoint = waypointsWithoutStart[randIndex];
-      return randomizedWaypoint;
-    };
 
     const randomPathData = {
       name: pathname,
       likes: 0,
     };
 
-    const randomWaypoints = [
-      ...new Set(Array.from({ length: numberOfWaypoints }, randomWaypoint)),
-    ];
-
-    const randomPath = [start, ...randomWaypoints, start];
+    const randomPath = generatePath(startName);
 
     // eslint-disable-next-line no-undef
     const directionsService = new google.maps.DirectionsService();
@@ -124,6 +107,7 @@ const PathForm = ({ waypoints, setWaypoints, paths, setPaths }) => {
         color="primary"
         type="submit"
         style={{ margin: "5px" }}
+        disabled={startName === ""}
       >
         Generate path!
       </Button>

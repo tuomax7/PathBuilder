@@ -4,7 +4,7 @@ import Map from "./Map.js";
 
 import axios from "axios";
 
-import { minsToRunning, metersToKilometers } from "../utils.js";
+import { minsToRunning, metersToKilometers } from "../utils/utils.js";
 
 import { TableCell, TableRow, Button } from "@mui/material";
 

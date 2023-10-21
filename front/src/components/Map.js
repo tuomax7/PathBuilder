@@ -7,7 +7,7 @@ import mapService from "../services/map.js";
 
 import GMap from "./GMap.js";
 
-import { minsToRunning, metersToKilometers } from "../utils.js";
+import { minsToRunning, metersToKilometers } from "../utils/utils.js";
 
 const libraries = ["places"];
 
