@@ -1,4 +1,11 @@
 import axios from "axios";
+import {
+  NewPathEntry,
+  WayPoint,
+  PathBase,
+  Path,
+  NewWayPointEntry,
+} from "../../../types/types";
 
 let urlBase = "";
 if (!process.env.NODE_ENV || process.env.NODE_ENV === "development") {
@@ -16,45 +23,57 @@ const getWaypoints = async () => {
 };
 
 const createPath = async (
-  randomPathData,
-  distanceResponse,
-  durationResponse,
-  randomPath
+  randomPathData: PathBase,
+  distanceResponse: number,
+  durationResponse: number,
+  randomPath: WayPoint[]
 ) => {
-  const response = await axios.post(`${urlBase}/api/paths/insert`, {
+  const newPath: NewPathEntry = {
     ...randomPathData,
     waypoints: randomPath,
     distance: distanceResponse,
     duration: durationResponse,
-  });
+  };
 
-  return response;
+  const response = await axios.post(`${urlBase}/api/paths/insert`, newPath);
+
+  return response.data[0];
 };
 
-const createWaypoint = async (waypoint, pathInsert) => {
-  const response = await axios.post(`${urlBase}/api/waypoints/insert`, {
+const createWaypoint = async (waypoint: NewWayPointEntry, pathInsert: Path) => {
+  const newWayPoint: WayPoint = {
     ...waypoint,
-    pathID: pathInsert.data[0].pathID,
-  });
+    pathID: pathInsert.pathID,
+  };
+
+  console.log(pathInsert);
+
+  const response = await axios.post(
+    `${urlBase}/api/waypoints/insert`,
+    newWayPoint
+  );
   return response;
 };
 
-const createWayPoints = async (randomPath, pathInsert) => {
+const createWayPoints = async (
+  randomPath: NewWayPointEntry[],
+  pathInsert: Path
+) => {
   await Promise.all(
     randomPath.map(async (waypoint) => {
       const waypointInsert = await createWaypoint(waypoint, pathInsert);
       return {
         ...waypoint,
-        pathID: pathInsert.data[0].pathID,
+        pathID: pathInsert.pathID,
         ID: waypointInsert.data[0].ID,
       };
     })
   );
 };
 
-const updatePathLikes = async (pathToUpdate) => {
+const updatePathLikes = async (pathToUpdate: Path) => {
   const response = await axios.put(
-    `${urlBase}/api/paths/${pathToUpdate.ID}/like`,
+    `${urlBase}/api/paths/${pathToUpdate.pathID}/like`,
     pathToUpdate
   );
   const updatedPath = await response.data;

@@ -2,7 +2,7 @@ import { createRef } from "react";
 import Togglable from "./Togglable.js";
 import Map from "./Map.js";
 
-import pathService from "../services/path.js";
+import pathService from "../services/path.ts";
 
 import { minsToRunning, metersToKilometers } from "../utils/utils.js";
 

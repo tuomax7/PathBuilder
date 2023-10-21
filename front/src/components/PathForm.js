@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import { useJsApiLoader } from "@react-google-maps/api";
 
 import { getMapPath } from "../services/map.js";
-import pathService from "../services/path.js";
+import pathService from "../services/path.ts";
 
 import generatePath from "../utils/pathgen.js";
 import possibleWaypoints from "../waypoints.json";

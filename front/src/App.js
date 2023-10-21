@@ -3,7 +3,7 @@ import PathForm from "./components/PathForm.js";
 //import WayPointList from "./components/WaypointList.js";
 import PathList from "./components/PathList.js";
 
-import pathService from "./services/path.js";
+import pathService from "./services/path.ts";
 
 import { Container } from "@mui/material";
 
