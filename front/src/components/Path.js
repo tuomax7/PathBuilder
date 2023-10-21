@@ -2,7 +2,7 @@ import { createRef } from "react";
 import Togglable from "./Togglable.js";
 import Map from "./Map.js";
 
-import axios from "axios";
+import pathService from "../services/path.js";
 
 import { minsToRunning, metersToKilometers } from "../utils/utils.js";
 
@@ -16,11 +16,7 @@ const Path = ({ waypoints, paths, setPaths, path }) => {
   };
 
   const handleLike = async (pathToUpdate) => {
-    const response = await axios.put(
-      `/api/paths/${pathToUpdate.ID}/like`,
-      pathToUpdate
-    );
-    const updatedPath = await response.data;
+    const updatedPath = await pathService.updatePathLikes(pathToUpdate);
 
     const updatedPaths = paths.map((path) =>
       path.ID === pathToUpdate.ID ? updatedPath : path
