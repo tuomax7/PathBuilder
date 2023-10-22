@@ -6,15 +6,15 @@ const Sorter = ({ setSortBy }) => {
       <h3>Sort by:</h3>
       <RadioGroup
         style={{ display: "inline" }}
-        defaultValue="likes"
+        defaultValue="reactions"
         name="radio-buttons-group"
       >
         <FormControlLabel
           defaultChecked
-          value="likes"
+          value="reactions"
           control={<Radio />}
-          label="Likes"
-          onChange={() => setSortBy("likes")}
+          label="Reactions"
+          onChange={() => setSortBy("reactions")}
         />
         <FormControlLabel
           value="distance"

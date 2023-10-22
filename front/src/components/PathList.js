@@ -6,7 +6,7 @@ import Sorter from "./Sorter.js";
 import { Table, TableBody, TableContainer, Paper } from "@mui/material";
 
 const PathList = ({ paths, setPaths, waypoints }) => {
-  const [sortBy, setSortBy] = useState("likes");
+  const [sortBy, setSortBy] = useState("reactions");
 
   const sortedPaths = () => {
     if (sortBy === "distance")
@@ -15,7 +15,12 @@ const PathList = ({ paths, setPaths, waypoints }) => {
       return paths.sort((a, b) => b.duration - a.duration);
     else if (sortBy === "name") {
       return paths.sort((a, b) => a.name.localeCompare(b.name));
-    } else return paths.sort((a, b) => b.likes - a.likes);
+    } else {
+      return paths.sort(
+        (a, b) =>
+          b.fun + b.nature + b.exhausting - (a.fun + a.nature + a.exhausting)
+      );
+    }
   };
 
   return (

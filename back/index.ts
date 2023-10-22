@@ -73,7 +73,6 @@ app.post("/api/waypoints/insert", (req, res) => {
   const name: string = req.body.name;
   const pathID: number = req.body.pathID;
 
-  console.log(pathID);
   const sqlInsert = "INSERT INTO waypoints (name, pathID) VALUES (?,?);";
   db.query(sqlInsert, [name, pathID], (err, result) => {});
 
@@ -85,34 +84,22 @@ app.post("/api/waypoints/insert", (req, res) => {
 
 app.post("/api/paths/insert", (req, res) => {
   const name: string = req.body.name;
-  const likes: number = req.body.likes;
   const exhausting: number = req.body.exhausting;
   const nature: number = req.body.nature;
   const fun: number = req.body.fun;
   const distance: number = req.body.distance;
   const duration: number = req.body.duration;
   const sqlInsert =
-    "INSERT INTO paths (name, likes, distance, duration, exhausting, nature, fun) VALUES (?,?,?,?,?,?,?);";
+    "INSERT INTO paths (name, distance, duration, exhausting, nature, fun) VALUES (?,?,?,?,?,?);";
   db.query(
     sqlInsert,
-    [name, likes, distance, duration, exhausting, nature, fun],
+    [name, distance, duration, exhausting, nature, fun],
     (err, result) => {}
   );
 
   const sqlSelect = "SELECT @@IDENTITY AS 'pathID';";
   db.query(sqlSelect, (err, result) => {
     res.send(result);
-  });
-});
-
-app.put("/api/paths/:pathID/like", (req, res) => {
-  const body: Path = req.body;
-  const pathID: number = Number(req.params.pathID);
-  const newLikes: number = body.likes + 1;
-
-  const sqlUpdate = "UPDATE paths SET likes = ? WHERE ID = ?;";
-  db.query(sqlUpdate, [newLikes, pathID], (err, result) => {
-    res.send({ ...body, likes: newLikes });
   });
 });
 

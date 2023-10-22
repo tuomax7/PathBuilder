@@ -6,7 +6,7 @@ import pathService from "../services/path.ts";
 
 import { minsToRunning, metersToKilometers } from "../utils/utils.js";
 
-import { TableCell, TableRow, Button } from "@mui/material";
+import { TableCell, TableRow } from "@mui/material";
 
 const ReactButton = ({ paths, pathToUpdate, reactionName, setPaths }) => {
   const handleReaction = async () => {
@@ -57,22 +57,10 @@ const Path = ({ waypoints, paths, setPaths, path }) => {
     return waypoints.filter((waypoint) => waypoint.pathID === ID);
   };
 
-  const handleLike = async (pathToUpdate) => {
-    const updatedPath = await pathService.updatePathLikes(pathToUpdate);
-
-    const updatedPaths = paths.map((path) =>
-      path.ID === pathToUpdate.ID ? updatedPath : path
-    );
-
-    setPaths(updatedPaths);
-  };
-
   return (
     <TableRow>
       <TableCell>
-        <h3>
-          {path.name} with {path.likes} likes
-        </h3>
+        <h3>{path.name}</h3>
         <div style={{ display: "flex" }}>
           <ReactButton
             reactionName="fun"
@@ -110,14 +98,6 @@ const Path = ({ waypoints, paths, setPaths, path }) => {
             ))}
           </ol>
           <Map waypoints={waypointsOfPathID(path.ID)} path={path} />
-          <Button
-            variant="contained"
-            color="success"
-            onClick={() => handleLike(path)}
-            style={{ marginRight: "10px" }}
-          >
-            Like!
-          </Button>
         </Togglable>
       </TableCell>
     </TableRow>

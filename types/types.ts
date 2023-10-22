@@ -10,7 +10,6 @@ export type NewWayPointEntry = Omit<WayPoint, "pathID">;
 export interface PathBase {
   ID: number;
   name: string;
-  likes: number;
   exhausting: number;
   nature: number;
   fun: number;
@@ -19,7 +18,6 @@ export interface PathBase {
 export interface Path {
   ID: number;
   name: string;
-  likes: number;
   exhausting: number;
   nature: number;
   fun: number;

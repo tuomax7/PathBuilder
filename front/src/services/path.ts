@@ -72,16 +72,6 @@ const createWayPoints = async (
   );
 };
 
-const updatePathLikes = async (pathToUpdate: Path) => {
-  const response = await axios.put(
-    `${urlBase}/api/paths/${pathToUpdate.ID}/like`,
-    pathToUpdate
-  );
-  const updatedPath = await response.data;
-
-  return updatedPath;
-};
-
 const updatePathReactions = async (
   pathToUpdate: Path,
   reactionName: string
@@ -100,6 +90,5 @@ export default {
   getWaypoints,
   createPath,
   createWayPoints,
-  updatePathLikes,
   updatePathReactions,
 };
