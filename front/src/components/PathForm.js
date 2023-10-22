@@ -2,7 +2,7 @@ import React, { useState } from "react";
 
 import { useJsApiLoader } from "@react-google-maps/api";
 
-import { getMapPath } from "../services/map.js";
+import { getMapPath } from "../services/map.ts";
 import pathService from "../services/path.ts";
 
 import generatePath from "../utils/pathgen.js";
@@ -53,7 +53,7 @@ const PathForm = ({ waypoints, setWaypoints, paths, setPaths }) => {
     setPaths(
       paths.concat({
         ...randomPathData,
-        ID: pathInsert.data[0].pathID,
+        ID: pathInsert.pathID,
         distance: distanceResponse,
         duration: durationResponse,
       })
@@ -96,7 +96,7 @@ const PathForm = ({ waypoints, setWaypoints, paths, setPaths }) => {
         color="primary"
         type="submit"
         style={{ margin: "5px" }}
-        disabled={startName === ""}
+        disabled={startName === "" || pathname.trim() === ""}
       >
         Generate path!
       </Button>

@@ -46,8 +46,6 @@ const createWaypoint = async (waypoint: NewWayPointEntry, pathInsert: Path) => {
     pathID: pathInsert.pathID,
   };
 
-  console.log(pathInsert);
-
   const response = await axios.post(
     `${urlBase}/api/waypoints/insert`,
     newWayPoint
@@ -59,7 +57,7 @@ const createWayPoints = async (
   randomPath: NewWayPointEntry[],
   pathInsert: Path
 ) => {
-  await Promise.all(
+  return await Promise.all(
     randomPath.map(async (waypoint) => {
       const waypointInsert = await createWaypoint(waypoint, pathInsert);
       return {

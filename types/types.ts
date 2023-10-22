@@ -17,7 +17,7 @@ export interface Path {
   likes: number;
   distance: number;
   duration: number;
-  waypoints?: WayPoint[];
+  waypoints: WayPoint[];
 }
 
 export type NewPathEntry = Omit<Path, "pathID">;

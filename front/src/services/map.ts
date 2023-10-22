@@ -1,4 +1,9 @@
-export const getMapPath = async (directionsService, path) => {
+import { NewWayPointEntry, Path } from "../../../types/types";
+
+export const getMapPath = async (
+  directionsService: google.maps.DirectionsService,
+  path: NewWayPointEntry[]
+) => {
   return await directionsService.route({
     origin: path[0].name,
     destination: path[path.length - 1].name,
@@ -10,7 +15,7 @@ export const getMapPath = async (directionsService, path) => {
   });
 };
 
-export const calculateStartPos = async (startName, setStartPos) => {
+export const calculateStartPos = async (startName: string) => {
   // eslint-disable-next-line no-undef
   const geocoder = new google.maps.Geocoder();
 
@@ -20,15 +25,15 @@ export const calculateStartPos = async (startName, setStartPos) => {
 
   const startPosLat = await startPosRequest.results[0].geometry.location.lat();
   const startPosLng = await startPosRequest.results[0].geometry.location.lng();
-  await setStartPos({ lat: startPosLat, lng: startPosLng });
+  return { lat: startPosLat, lng: startPosLng };
 };
 
-export const calculateRoute = async (path, setDirectionsResponse) => {
+export const calculateRoute = async (path: Path) => {
   // eslint-disable-next-line no-undef
   const directionsService = new google.maps.DirectionsService();
 
   const results = await getMapPath(directionsService, path.waypoints);
-  await setDirectionsResponse(results);
+  return results;
 };
 
 // eslint-disable-next-line

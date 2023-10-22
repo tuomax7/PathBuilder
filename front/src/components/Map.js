@@ -3,7 +3,7 @@ import { useJsApiLoader } from "@react-google-maps/api";
 
 import { Button } from "@mui/material";
 
-import { calculateRoute, calculateStartPos } from "../services/map.js";
+import { calculateRoute, calculateStartPos } from "../services/map.ts";
 
 import GMap from "./GMap.js";
 
@@ -26,10 +26,15 @@ const Map = ({ path, waypoints }) => {
   const [directionsURL, setDirectionsURL] = useState("");
 
   useEffect(() => {
-    if (isLoaded) {
-      calculateRoute({ ...path, waypoints }, setDirectionsResponse);
-      calculateStartPos(waypoints[0].name, setStartPos);
+    const renderPath = async () => {
+      setDirectionsResponse(
+        await calculateRoute({ ...path, waypoints }, setDirectionsResponse)
+      );
+      setStartPos(await calculateStartPos(waypoints[0].name));
+    };
 
+    if (isLoaded) {
+      renderPath();
       setDirectionsURL(calculateDirectionsURL(waypoints));
     }
   }, [isLoaded, path, waypoints, directionsURL]);
