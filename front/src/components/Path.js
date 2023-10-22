@@ -1,54 +1,11 @@
 import { createRef } from "react";
 import Togglable from "./Togglable.js";
 import Map from "./Map.js";
-
-import pathService from "../services/path.ts";
+import ReactButton from "./ReactButton.js";
 
 import { minsToRunning, metersToKilometers } from "../utils/utils.js";
 
 import { TableCell, TableRow } from "@mui/material";
-
-const ReactButton = ({ paths, pathToUpdate, reactionName, setPaths }) => {
-  const handleReaction = async () => {
-    const updatedPath = await pathService.updatePathReactions(
-      pathToUpdate,
-      reactionName
-    );
-
-    const updatedPaths = paths.map((path) =>
-      path.ID === pathToUpdate.ID ? updatedPath : path
-    );
-
-    setPaths(updatedPaths);
-  };
-
-  let icon = "";
-  let reactionCount = 0;
-  switch (reactionName) {
-    case "fun":
-      icon = "😁";
-      reactionCount = pathToUpdate.fun;
-      break;
-    case "nature":
-      icon = "🌳";
-      reactionCount = pathToUpdate.nature;
-      break;
-    case "exhausting":
-      icon = "💪";
-      reactionCount = pathToUpdate.exhausting;
-      break;
-    default:
-      icon = "";
-  }
-  return (
-    <div>
-      <button name="fun" onClick={() => handleReaction()} style={{ margin: 5 }}>
-        {icon}
-      </button>
-      {reactionCount}
-    </div>
-  );
-};
 
 const Path = ({ waypoints, paths, setPaths, path }) => {
   const mapRef = createRef();
@@ -60,8 +17,8 @@ const Path = ({ waypoints, paths, setPaths, path }) => {
   return (
     <TableRow>
       <TableCell>
-        <h3>{path.name}</h3>
-        <div style={{ display: "flex" }}>
+        <div style={{ display: "flex", alignItems: "center" }}>
+          <h3>{path.name}</h3>
           <ReactButton
             reactionName="fun"
             pathToUpdate={path}
