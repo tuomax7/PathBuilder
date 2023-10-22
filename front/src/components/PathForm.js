@@ -27,6 +27,9 @@ const PathForm = ({ waypoints, setWaypoints, paths, setPaths }) => {
     const randomPathData = {
       name: pathname,
       likes: 0,
+      exhausting: 0,
+      natural: 0,
+      fun: 0,
     };
 
     const randomPath = generatePath(startName);

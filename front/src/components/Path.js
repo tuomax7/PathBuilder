@@ -30,6 +30,11 @@ const Path = ({ waypoints, paths, setPaths, path }) => {
         <h3>
           '{path.name}' with {path.likes} likes
         </h3>
+
+        <div>
+          😁: {path.fun} 🌳: {path.natural} 💪: {path.exhausting}
+        </div>
+
         {path.distance && path.duration ? (
           <p>
             {metersToKilometers(path.distance)} km,{" "}
