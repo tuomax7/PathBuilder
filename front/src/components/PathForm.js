@@ -28,7 +28,7 @@ const PathForm = ({ waypoints, setWaypoints, paths, setPaths }) => {
       name: pathname,
       likes: 0,
       exhausting: 0,
-      natural: 0,
+      nature: 0,
       fun: 0,
     };
 

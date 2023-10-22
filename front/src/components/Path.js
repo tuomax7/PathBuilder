@@ -8,6 +8,48 @@ import { minsToRunning, metersToKilometers } from "../utils/utils.js";
 
 import { TableCell, TableRow, Button } from "@mui/material";
 
+const ReactButton = ({ paths, pathToUpdate, reactionName, setPaths }) => {
+  const handleReaction = async () => {
+    const updatedPath = await pathService.updatePathReactions(
+      pathToUpdate,
+      reactionName
+    );
+
+    const updatedPaths = paths.map((path) =>
+      path.ID === pathToUpdate.ID ? updatedPath : path
+    );
+
+    setPaths(updatedPaths);
+  };
+
+  let icon = "";
+  let reactionCount = 0;
+  switch (reactionName) {
+    case "fun":
+      icon = "😁";
+      reactionCount = pathToUpdate.fun;
+      break;
+    case "nature":
+      icon = "🌳";
+      reactionCount = pathToUpdate.nature;
+      break;
+    case "exhausting":
+      icon = "💪";
+      reactionCount = pathToUpdate.exhausting;
+      break;
+    default:
+      icon = "";
+  }
+  return (
+    <div>
+      <button name="fun" onClick={() => handleReaction()} style={{ margin: 5 }}>
+        {icon}
+      </button>
+      {reactionCount}
+    </div>
+  );
+};
+
 const Path = ({ waypoints, paths, setPaths, path }) => {
   const mapRef = createRef();
   //KORVAA SQL-KYSELYLLÄ
@@ -24,15 +66,32 @@ const Path = ({ waypoints, paths, setPaths, path }) => {
 
     setPaths(updatedPaths);
   };
+
   return (
     <TableRow>
       <TableCell>
         <h3>
-          '{path.name}' with {path.likes} likes
+          {path.name} with {path.likes} likes
         </h3>
-
-        <div>
-          😁: {path.fun} 🌳: {path.natural} 💪: {path.exhausting}
+        <div style={{ display: "flex" }}>
+          <ReactButton
+            reactionName="fun"
+            pathToUpdate={path}
+            setPaths={setPaths}
+            paths={paths}
+          />
+          <ReactButton
+            reactionName="nature"
+            pathToUpdate={path}
+            setPaths={setPaths}
+            paths={paths}
+          />
+          <ReactButton
+            reactionName="exhausting"
+            pathToUpdate={path}
+            setPaths={setPaths}
+            paths={paths}
+          />
         </div>
 
         {path.distance && path.duration ? (

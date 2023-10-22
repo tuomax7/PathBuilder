@@ -8,24 +8,24 @@ export type NewWayPointEntry = Omit<WayPoint, "pathID">;
 // Tee uusi reaktiot-tyyppi?
 
 export interface PathBase {
-  pathID: number;
+  ID: number;
   name: string;
   likes: number;
-  exhausting?: number;
-  natural?: number;
-  fun?: number;
+  exhausting: number;
+  nature: number;
+  fun: number;
 }
 
 export interface Path {
-  pathID: number;
+  ID: number;
   name: string;
   likes: number;
-  exhausting?: number;
-  natural?: number;
-  fun?: number;
+  exhausting: number;
+  nature: number;
+  fun: number;
   distance: number;
   duration: number;
   waypoints: WayPoint[];
 }
 
-export type NewPathEntry = Omit<Path, "pathID">;
+export type NewPathEntry = Omit<Path, "ID">;

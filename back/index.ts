@@ -72,6 +72,8 @@ app.get("/api/paths/get", (req, res) => {
 app.post("/api/waypoints/insert", (req, res) => {
   const name: string = req.body.name;
   const pathID: number = req.body.pathID;
+
+  console.log(pathID);
   const sqlInsert = "INSERT INTO waypoints (name, pathID) VALUES (?,?);";
   db.query(sqlInsert, [name, pathID], (err, result) => {});
 
@@ -85,15 +87,15 @@ app.post("/api/paths/insert", (req, res) => {
   const name: string = req.body.name;
   const likes: number = req.body.likes;
   const exhausting: number = req.body.exhausting;
-  const natural: number = req.body.natural;
+  const nature: number = req.body.nature;
   const fun: number = req.body.fun;
   const distance: number = req.body.distance;
   const duration: number = req.body.duration;
   const sqlInsert =
-    "INSERT INTO paths (name, likes, distance, duration, exhausting, natural, fun) VALUES (?,?,?,?,?,?,?);";
+    "INSERT INTO paths (name, likes, distance, duration, exhausting, nature, fun) VALUES (?,?,?,?,?,?,?);";
   db.query(
     sqlInsert,
-    [name, likes, distance, duration, exhausting, natural, fun],
+    [name, likes, distance, duration, exhausting, nature, fun],
     (err, result) => {}
   );
 
@@ -111,6 +113,39 @@ app.put("/api/paths/:pathID/like", (req, res) => {
   const sqlUpdate = "UPDATE paths SET likes = ? WHERE ID = ?;";
   db.query(sqlUpdate, [newLikes, pathID], (err, result) => {
     res.send({ ...body, likes: newLikes });
+  });
+});
+
+app.put("/api/paths/:pathID/fun", (req, res) => {
+  const body: Path = req.body;
+  const pathID: number = Number(req.params.pathID);
+  const newFunCount: number = body.fun + 1;
+
+  const sqlUpdate = "UPDATE paths SET fun = ? WHERE ID = ?;";
+  db.query(sqlUpdate, [newFunCount, pathID], (err, result) => {
+    res.send({ ...body, fun: newFunCount });
+  });
+});
+
+app.put("/api/paths/:pathID/nature", (req, res) => {
+  const body: Path = req.body;
+  const pathID: number = Number(req.params.pathID);
+  const newNaturalCount: number = body.nature + 1;
+
+  const sqlUpdate = "UPDATE paths SET nature = ? WHERE ID = ?;";
+  db.query(sqlUpdate, [newNaturalCount, pathID], (err, result) => {
+    res.send({ ...body, nature: newNaturalCount });
+  });
+});
+
+app.put("/api/paths/:pathID/exhausting", (req, res) => {
+  const body: Path = req.body;
+  const pathID: number = Number(req.params.pathID);
+  const newExhaustingCount: number = body.exhausting + 1;
+
+  const sqlUpdate = "UPDATE paths SET exhausting = ? WHERE ID = ?;";
+  db.query(sqlUpdate, [newExhaustingCount, pathID], (err, result) => {
+    res.send({ ...body, exhausting: newExhaustingCount });
   });
 });
 

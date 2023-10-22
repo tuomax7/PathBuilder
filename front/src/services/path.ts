@@ -40,7 +40,10 @@ const createPath = async (
   return response.data[0];
 };
 
-const createWaypoint = async (waypoint: NewWayPointEntry, pathInsert: Path) => {
+const createWaypoint = async (
+  waypoint: NewWayPointEntry,
+  pathInsert: { pathID: number }
+) => {
   const newWayPoint: WayPoint = {
     ...waypoint,
     pathID: pathInsert.pathID,
@@ -55,7 +58,7 @@ const createWaypoint = async (waypoint: NewWayPointEntry, pathInsert: Path) => {
 
 const createWayPoints = async (
   randomPath: NewWayPointEntry[],
-  pathInsert: Path
+  pathInsert: { pathID: number }
 ) => {
   return await Promise.all(
     randomPath.map(async (waypoint) => {
@@ -71,7 +74,7 @@ const createWayPoints = async (
 
 const updatePathLikes = async (pathToUpdate: Path) => {
   const response = await axios.put(
-    `${urlBase}/api/paths/${pathToUpdate.pathID}/like`,
+    `${urlBase}/api/paths/${pathToUpdate.ID}/like`,
     pathToUpdate
   );
   const updatedPath = await response.data;
@@ -79,6 +82,18 @@ const updatePathLikes = async (pathToUpdate: Path) => {
   return updatedPath;
 };
 
+const updatePathReactions = async (
+  pathToUpdate: Path,
+  reactionName: string
+) => {
+  const response = await axios.put(
+    `${urlBase}/api/paths/${pathToUpdate.ID}/${reactionName}`,
+    pathToUpdate
+  );
+  const updatedPath = await response.data;
+
+  return updatedPath;
+};
 // eslint-disable-next-line
 export default {
   getPaths,
@@ -86,4 +101,5 @@ export default {
   createPath,
   createWayPoints,
   updatePathLikes,
+  updatePathReactions,
 };
