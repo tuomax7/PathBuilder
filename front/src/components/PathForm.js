@@ -2,8 +2,8 @@ import React, { useState } from "react";
 
 import { useJsApiLoader } from "@react-google-maps/api";
 
-import mapService from "../services/map.js";
-import pathService from "../services/path.js";
+import { getMapPath } from "../services/map.ts";
+import pathService from "../services/path.ts";
 
 import generatePath from "../utils/pathgen.js";
 import possibleWaypoints from "../waypoints.json";
@@ -34,8 +34,7 @@ const PathForm = ({ waypoints, setWaypoints, paths, setPaths }) => {
     // eslint-disable-next-line no-undef
     const directionsService = new google.maps.DirectionsService();
 
-    const results = await mapService.getMapPath(directionsService, randomPath);
-
+    const results = await getMapPath(directionsService, randomPath);
     const distanceResponse = results.routes[0].legs[0].distance.value;
     const durationResponse = results.routes[0].legs[0].duration.value;
 
@@ -46,25 +45,15 @@ const PathForm = ({ waypoints, setWaypoints, paths, setPaths }) => {
       randomPath
     );
 
-    const path = await Promise.all(
-      randomPath.map(async (waypoint) => {
-        const waypointInsert = await pathService.createWaypoint(
-          waypoint,
-          pathInsert
-        );
-        return {
-          ...waypoint,
-          pathID: pathInsert.data[0].pathID,
-          ID: waypointInsert.data[0].ID,
-        };
-      })
-    );
+    const path = await pathService.createWayPoints(randomPath, pathInsert);
+
     const concatedWaypoints = [...waypoints, ...path];
+
     setWaypoints(concatedWaypoints);
     setPaths(
       paths.concat({
         ...randomPathData,
-        ID: pathInsert.data[0].pathID,
+        ID: pathInsert.pathID,
         distance: distanceResponse,
         duration: durationResponse,
       })
@@ -107,7 +96,7 @@ const PathForm = ({ waypoints, setWaypoints, paths, setPaths }) => {
         color="primary"
         type="submit"
         style={{ margin: "5px" }}
-        disabled={startName === ""}
+        disabled={startName === "" || pathname.trim() === ""}
       >
         Generate path!
       </Button>
