@@ -1,8 +1,6 @@
 import possibleWaypoints from "../waypoints.json";
 
-const numberOfWaypoints = 3;
-
-const generatePath = (startName) => {
+const generatePath = (startName, waypointCount) => {
   const start = { name: startName };
 
   let availableWaypoints = possibleWaypoints.filter(
@@ -21,7 +19,7 @@ const generatePath = (startName) => {
   };
 
   const randomWaypoints = [
-    ...new Set(Array.from({ length: numberOfWaypoints }, randomWaypoint)),
+    ...new Set(Array.from({ length: waypointCount }, randomWaypoint)),
   ];
 
   const randomPath = [start, ...randomWaypoints, start];

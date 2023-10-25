@@ -8,7 +8,15 @@ import pathService from "../services/path.ts";
 import generatePath from "../utils/pathgen.js";
 import possibleWaypoints from "../waypoints.json";
 
-import { TextField, Button, Select, MenuItem } from "@mui/material";
+import {
+  TextField,
+  Button,
+  Select,
+  MenuItem,
+  Slider,
+  Typography,
+  Box,
+} from "@mui/material";
 
 const libraries = ["places"];
 
@@ -20,6 +28,7 @@ const PathForm = ({ waypoints, setWaypoints, paths, setPaths }) => {
 
   const [pathname, setPathname] = useState("");
   const [startName, setStartName] = useState("");
+  const [waypointCount, setWaypointCount] = useState(4);
 
   const generate = async (e) => {
     e.preventDefault();
@@ -31,7 +40,7 @@ const PathForm = ({ waypoints, setWaypoints, paths, setPaths }) => {
       fun: 0,
     };
 
-    const randomPath = generatePath(startName);
+    const randomPath = generatePath(startName, waypointCount);
 
     // eslint-disable-next-line no-undef
     const directionsService = new google.maps.DirectionsService();
@@ -66,7 +75,7 @@ const PathForm = ({ waypoints, setWaypoints, paths, setPaths }) => {
     return <div>Google maps loading...</div>;
   }
   return (
-    <form onSubmit={generate}>
+    <form onSubmit={generate} style={{ alignItems: "center" }}>
       <TextField
         type="text"
         name="pathname"
@@ -93,6 +102,21 @@ const PathForm = ({ waypoints, setWaypoints, paths, setPaths }) => {
             </MenuItem>
           ))}
       </Select>
+      <Box display="flex" flexDirection="row" my={4}>
+        <Typography>Number of waypoints:</Typography>
+        <Slider
+          aria-label="Number of waypoints"
+          value={waypointCount}
+          step={1}
+          marks
+          min={1}
+          max={7}
+          valueLabelDisplay="on"
+          sx={{ mx: 2, width: "70%" }}
+          onChange={(e) => setWaypointCount(e.target.value)}
+        />
+      </Box>
+
       <Button
         variant="contained"
         color="primary"

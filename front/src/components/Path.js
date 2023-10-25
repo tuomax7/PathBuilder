@@ -5,13 +5,24 @@ import ReactButton from "./ReactButton.js";
 
 import { minsToRunning, metersToKilometers } from "../utils/utils.js";
 
-import { TableCell, TableRow } from "@mui/material";
+import { TableCell, TableRow, Typography, List, ListItem } from "@mui/material";
 
 const Path = ({ waypoints, paths, setPaths, path }) => {
   const mapRef = createRef();
   //KORVAA SQL-KYSELYLLÄ
   const waypointsOfPathID = (ID) => {
     return waypoints.filter((waypoint) => waypoint.pathID === ID);
+  };
+
+  const waypointLabel = (index) => {
+    switch (index) {
+      case 0:
+        return "(start)";
+      case waypointsOfPathID(path.ID).length - 1:
+        return "(end)";
+      default:
+        return "";
+    }
   };
 
   return (
@@ -48,12 +59,14 @@ const Path = ({ waypoints, paths, setPaths, path }) => {
           <p>Show to build path!</p>
         )}
         <Togglable buttonLabel="Show path!" ref={mapRef}>
-          Waypoints:
-          <ol>
-            {waypointsOfPathID(path.ID).map((waypoint) => (
-              <li key={waypoint.ID}>{waypoint.name}</li>
+          <Typography>Route:</Typography>
+          <List>
+            {waypointsOfPathID(path.ID).map((waypoint, index) => (
+              <ListItem key={waypoint.ID} sx={{ p: 0.5 }}>
+                {index + 1}. {waypoint.name} {waypointLabel(index)}
+              </ListItem>
             ))}
-          </ol>
+          </List>
           <Map waypoints={waypointsOfPathID(path.ID)} path={path} />
         </Togglable>
       </TableCell>
