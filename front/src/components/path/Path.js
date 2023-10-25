@@ -1,9 +1,9 @@
 import { createRef } from "react";
-import Togglable from "./Togglable.js";
-import Map from "./Map.js";
-import ReactButton from "./ReactButton.js";
+import Togglable from "../ui-elements/Togglable.js";
+import Map from "../map/Map.js";
+import ReactButton from "../ui-elements/ReactButton.js";
 
-import { durationString, metersToKilometers } from "../utils/utils.js";
+import { durationString, metersToKilometers } from "../../utils/utils.js";
 
 import {
   TableCell,

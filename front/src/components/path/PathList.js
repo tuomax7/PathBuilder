@@ -1,7 +1,7 @@
 import { useState } from "react";
 
 import Path from "./Path.js";
-import Sorter from "./Sorter.js";
+import Sorter from "../ui-elements/Sorter.js";
 
 import {
   Table,

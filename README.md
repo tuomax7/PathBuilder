@@ -2,7 +2,7 @@
 
 [https://pathbuilder.herokuapp.com/](https://pathbuilder.herokuapp.com/)
 
-An app for generating randomized routes for runs with Google Maps. Built using React, Node (with TypeScript) and MySQL. Tuomas Nummela 7.1.2022
+An app for generating randomized routes for runs with Google Maps. Built using React, Node (with TypeScript) and MySQL. Tuomas Nummela 25.10.2023
 
 ## Instructions to run locally
 
@@ -12,19 +12,23 @@ Create a Google Maps API project at the Cloud Console and generate an API key to
 
 [https://console.cloud.google.com/google/maps-apis/overview](https://console.cloud.google.com/google/maps-apis/overview)
 
-Set up a MySQL connection and place your credentials to **HOST**, **USER**, **PASSWORD** and **DATABASE** in the backend.
+Set up a MySQL connection and place your credentials to **HOST**, **USER**, **PASSWORD** and **DATABASE** in the backend in a **.env** file.
 
-To install needed packages: (root directory)
+To run the client: (`front` directory)
 
 ### `npm install`
 
-To run the client: (front directory)
-
 ### `npm start`
 
-To run the server: (back directory)
+Open [http://localhost:3000](http://localhost:3000) to view the client in your browser.
+
+To run the server: (`back` directory)
+
+### `npm install`
 
 ### `npm run server`
 
 This runs the app in the development mode.
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+Open [http://localhost:3001/api](http://localhost:3001/api) to access the server api.
+
+API endpoints are described in `back/readme.MD`.

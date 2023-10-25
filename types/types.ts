@@ -5,22 +5,23 @@ export interface WayPoint {
 
 export type NewWayPointEntry = Omit<WayPoint, "pathID">;
 
-// Tee uusi reaktiot-tyyppi?
+// Could be expanded later
+type Reaction = number;
 
 export interface PathBase {
   ID: number;
   name: string;
-  exhausting: number;
-  nature: number;
-  fun: number;
+  exhausting: Reaction;
+  nature: Reaction;
+  fun: Reaction;
 }
 
 export interface Path {
   ID: number;
   name: string;
-  exhausting: number;
-  nature: number;
-  fun: number;
+  exhausting: Reaction;
+  nature: Reaction;
+  fun: Reaction;
   distance: number;
   duration: number;
   waypoints: WayPoint[];

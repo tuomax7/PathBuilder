@@ -1,4 +1,4 @@
-import pathService from "../services/path.ts";
+import pathService from "../../services/path.ts";
 
 import { IconButton, Box } from "@mui/material";
 

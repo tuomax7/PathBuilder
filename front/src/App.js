@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
-import PathForm from "./components/PathForm.js";
-//import WayPointList from "./components/WaypointList.js";
-import PathList from "./components/PathList.js";
+import PathForm from "./components/path/PathForm.js";
+import PathList from "./components/path/PathList.js";
 
 import pathService from "./services/path.ts";
 
@@ -70,7 +69,6 @@ const App = () => {
           />
         </Box>
 
-        {/*<WayPointList waypoints={waypoints} /> */}
         <PathList waypoints={waypoints} paths={paths} setPaths={setPaths} />
       </Container>
     </ThemeProvider>

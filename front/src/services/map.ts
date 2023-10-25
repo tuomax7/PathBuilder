@@ -35,5 +35,3 @@ export const calculateRoute = async (path: Path) => {
   const results = await getMapPath(directionsService, path.waypoints);
   return results;
 };
-
-// eslint-disable-next-line

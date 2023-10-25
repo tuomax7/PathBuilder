@@ -3,7 +3,7 @@ import { useJsApiLoader } from "@react-google-maps/api";
 
 import { Button, Typography, Box } from "@mui/material";
 
-import { calculateRoute, calculateStartPos } from "../services/map.ts";
+import { calculateRoute, calculateStartPos } from "../../services/map.ts";
 
 import GMap from "./GMap.js";
 
@@ -11,7 +11,7 @@ import {
   durationString,
   metersToKilometers,
   calculateDirectionsURL,
-} from "../utils/utils.js";
+} from "../../utils/utils.js";
 
 const libraries = ["places"];
 

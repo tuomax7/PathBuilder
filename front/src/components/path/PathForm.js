@@ -2,11 +2,11 @@ import React, { useState } from "react";
 
 import { useJsApiLoader } from "@react-google-maps/api";
 
-import { getMapPath } from "../services/map.ts";
-import pathService from "../services/path.ts";
+import { getMapPath } from "../../services/map.ts";
+import pathService from "../../services/path.ts";
 
-import generatePath from "../utils/pathgen.js";
-import possibleWaypoints from "../waypoints.json";
+import generatePath from "../../utils/pathgen.js";
+import possibleWaypoints from "../../waypoints.json";
 
 import {
   TextField,
