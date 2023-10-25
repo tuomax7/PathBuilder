@@ -5,7 +5,9 @@ import PathList from "./components/PathList.js";
 
 import pathService from "./services/path.ts";
 
-import { Container } from "@mui/material";
+import { createTheme, ThemeProvider } from "@mui/material/styles";
+
+import { Container, Typography, Box } from "@mui/material";
 
 const App = () => {
   const [waypoints, setWaypoints] = useState([]);
@@ -20,35 +22,58 @@ const App = () => {
     });
   }, []);
 
+  const THEME = createTheme({
+    typography: {
+      fontFamily: `"Roboto", "Helvetica", sans-serif`,
+      fontSize: 14,
+      fontWeightLight: 300,
+      fontWeightRegular: 400,
+      fontWeightMedium: 500,
+      h1: {
+        fontSize: 40,
+      },
+      h2: {
+        fontSize: 32,
+      },
+      h3: {
+        fontSize: 24,
+      },
+    },
+  });
+
   return (
-    <Container
-      style={{
-        width: "75%",
-        height: "100%",
-        backgroundColor: "white",
-        borderRadius: "10px",
-      }}
-    >
-      <div
+    <ThemeProvider theme={THEME}>
+      <Container
         style={{
-          backgroundColor: "#ECE7DC",
-          padding: "10px",
+          backgroundColor: "white",
           borderRadius: "10px",
-          marginTop: "50px",
+          paddingTop: 5,
+          marginTop: 30,
         }}
       >
-        <h1>FindMyPath</h1>
-        <PathForm
-          waypoints={waypoints}
-          setWaypoints={setWaypoints}
-          paths={paths}
-          setPaths={setPaths}
-        />
-      </div>
+        <Box
+          style={{
+            backgroundColor: "#ECE7DC",
+            padding: 10,
+            borderRadius: 10,
+            marginTop: 10,
+          }}
+        >
+          <Typography variant="h1" style={{ marginTop: 10 }}>
+            FindMyPath
+          </Typography>
+          <PathForm
+            waypoints={waypoints}
+            setWaypoints={setWaypoints}
+            paths={paths}
+            setPaths={setPaths}
+          />
+        </Box>
 
-      {/*<WayPointList waypoints={waypoints} /> */}
-      <PathList waypoints={waypoints} paths={paths} setPaths={setPaths} />
-    </Container>
+        {/*<WayPointList waypoints={waypoints} /> */}
+        <PathList waypoints={waypoints} paths={paths} setPaths={setPaths} />
+      </Container>
+    </ThemeProvider>
   );
 };
 

@@ -3,9 +3,16 @@ import Togglable from "./Togglable.js";
 import Map from "./Map.js";
 import ReactButton from "./ReactButton.js";
 
-import { minsToRunning, metersToKilometers } from "../utils/utils.js";
+import { durationString, metersToKilometers } from "../utils/utils.js";
 
-import { TableCell, TableRow, Typography, List, ListItem } from "@mui/material";
+import {
+  TableCell,
+  TableRow,
+  Typography,
+  List,
+  ListItem,
+  Box,
+} from "@mui/material";
 
 const Path = ({ waypoints, paths, setPaths, path }) => {
   const mapRef = createRef();
@@ -28,8 +35,8 @@ const Path = ({ waypoints, paths, setPaths, path }) => {
   return (
     <TableRow>
       <TableCell>
-        <div style={{ display: "flex", alignItems: "center" }}>
-          <h3>{path.name}</h3>
+        <Box style={{ display: "flex", alignItems: "center", marginBottom: 2 }}>
+          <Typography variant="h3">{path.name}</Typography>
           <ReactButton
             reactionName="fun"
             pathToUpdate={path}
@@ -48,15 +55,15 @@ const Path = ({ waypoints, paths, setPaths, path }) => {
             setPaths={setPaths}
             paths={paths}
           />
-        </div>
+        </Box>
 
         {path.distance && path.duration ? (
-          <p>
+          <Typography marginBottom={2}>
             {metersToKilometers(path.distance)} km,{" "}
-            {minsToRunning(path.duration)} mins
-          </p>
+            {durationString(path.duration)}
+          </Typography>
         ) : (
-          <p>Show to build path!</p>
+          <Typography>Show to build path!</Typography>
         )}
         <Togglable buttonLabel="Show path!" ref={mapRef}>
           <Typography>Route:</Typography>

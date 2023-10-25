@@ -1,6 +1,6 @@
 import pathService from "../services/path.ts";
 
-import { IconButton } from "@mui/material";
+import { IconButton, Box } from "@mui/material";
 
 import DirectionsRunIcon from "@mui/icons-material/DirectionsRun";
 import MoodIcon from "@mui/icons-material/Mood";
@@ -40,12 +40,12 @@ const ReactButton = ({ paths, pathToUpdate, reactionName, setPaths }) => {
       icon = <MoodIcon color="primary" />;
   }
   return (
-    <div sx={{ mx: 3 }}>
+    <Box sx={{ mx: 1 }}>
       <IconButton name={reactionName} onClick={() => handleReaction()}>
         {icon}
       </IconButton>
       {reactionCount}
-    </div>
+    </Box>
   );
 };
 

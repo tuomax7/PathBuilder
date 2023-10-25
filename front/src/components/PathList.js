@@ -3,7 +3,14 @@ import { useState } from "react";
 import Path from "./Path.js";
 import Sorter from "./Sorter.js";
 
-import { Table, TableBody, TableContainer, Paper } from "@mui/material";
+import {
+  Table,
+  TableBody,
+  TableContainer,
+  Paper,
+  Typography,
+  Box,
+} from "@mui/material";
 
 const PathList = ({ paths, setPaths, waypoints }) => {
   const [sortBy, setSortBy] = useState("reactions");
@@ -24,29 +31,33 @@ const PathList = ({ paths, setPaths, waypoints }) => {
   };
 
   return (
-    <div>
-      <Sorter setSortBy={setSortBy} />
-      <h3>All paths</h3>
+    <Box paddingY={2}>
       {sortedPaths().length === 0 ? (
-        <p>Start by generating a path!</p>
+        <Typography>Start by generating a path!</Typography>
       ) : (
-        <TableContainer component={Paper}>
-          <Table>
-            <TableBody>
-              {sortedPaths().map((path) => (
-                <Path
-                  key={path.ID}
-                  paths={paths}
-                  setPaths={setPaths}
-                  path={path}
-                  waypoints={waypoints}
-                />
-              ))}
-            </TableBody>
-          </Table>
-        </TableContainer>
+        <Box>
+          <Sorter setSortBy={setSortBy} />
+          <Typography variant="h2" marginBottom={2}>
+            All paths
+          </Typography>
+          <TableContainer component={Paper}>
+            <Table>
+              <TableBody>
+                {sortedPaths().map((path) => (
+                  <Path
+                    key={path.ID}
+                    paths={paths}
+                    setPaths={setPaths}
+                    path={path}
+                    waypoints={waypoints}
+                  />
+                ))}
+              </TableBody>
+            </Table>
+          </TableContainer>
+        </Box>
       )}
-    </div>
+    </Box>
   );
 };
 

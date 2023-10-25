@@ -1,9 +1,15 @@
-import { RadioGroup, FormControlLabel, Radio } from "@mui/material";
+import {
+  RadioGroup,
+  FormControlLabel,
+  Radio,
+  Typography,
+  Box,
+} from "@mui/material";
 
 const Sorter = ({ setSortBy }) => {
   return (
-    <div>
-      <h3>Sort by:</h3>
+    <Box marginBottom={2}>
+      <Typography fontSize={18}>Sort by:</Typography>
       <RadioGroup
         style={{ display: "inline" }}
         defaultValue="reactions"
@@ -35,7 +41,7 @@ const Sorter = ({ setSortBy }) => {
           onChange={() => setSortBy("name")}
         />
       </RadioGroup>
-    </div>
+    </Box>
   );
 };
 

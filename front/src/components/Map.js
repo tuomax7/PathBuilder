@@ -1,14 +1,14 @@
 import React, { useState, useEffect } from "react";
 import { useJsApiLoader } from "@react-google-maps/api";
 
-import { Button } from "@mui/material";
+import { Button, Typography, Box } from "@mui/material";
 
 import { calculateRoute, calculateStartPos } from "../services/map.ts";
 
 import GMap from "./GMap.js";
 
 import {
-  minsToRunning,
+  durationString,
   metersToKilometers,
   calculateDirectionsURL,
 } from "../utils/utils.js";
@@ -40,19 +40,21 @@ const Map = ({ path, waypoints }) => {
   }, [isLoaded, path, waypoints, directionsURL]);
 
   if (!isLoaded) {
-    return <div>No map!</div>;
+    return <Box>No map!</Box>;
   }
 
   return (
-    <div style={{ marginBottom: 20 }}>
-      <div style={{ height: "50vh", width: "80%" }}>
+    <Box style={{ marginBottom: 20 }}>
+      <Box style={{ height: "50vh" }}>
         <GMap directionsResponse={directionsResponse} startPos={startPos} />
-      </div>
+      </Box>
       {!path.distance || !path.duration ? null : (
-        <div>
-          <p>Distance: {metersToKilometers(path.distance)} km</p>
-          <p>Duration: {minsToRunning(path.duration)} mins by running</p>
-        </div>
+        <Box marginY={2}>
+          <Typography>
+            Distance: {metersToKilometers(path.distance)} km
+          </Typography>
+          <Typography>Duration: {durationString(path.duration)}</Typography>
+        </Box>
       )}
 
       <Button
@@ -63,7 +65,7 @@ const Map = ({ path, waypoints }) => {
       >
         Open in Google Maps!
       </Button>
-    </div>
+    </Box>
   );
 };
 
