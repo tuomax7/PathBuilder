@@ -2,13 +2,15 @@
 
 ## Setting up the API
 
-Set up a MySQL connection and place your credentials to **HOST**, **USER**, **PASSWORD** and **DATABASE** in the backend in a **.env** file.
+Set up a MySQL connection and place your credentials to **HOST**, **USER**, **PASSWORD** and **DATABASE** in the backend in a **.env** file for a production database. You can also set **HOST_DEV**, **USER_DEV**, **PASSWORD_DEV** and **DATABASE_DEV** to have a separate database connection for local development & testing.
 
 To run the server: (`back` directory)
 
 ### `npm install`
 
-### `npm run server`
+### `npm start` to run production
+
+### `npm run dev` to run in development mode
 
 ## API endpoints
 

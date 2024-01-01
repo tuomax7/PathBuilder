@@ -20,28 +20,37 @@ import { Path } from "../types/types";
 
 let db: mysql.Connection;
 
-function handleDisconnect() {
-  if (dotenv) {
-    const db_config = {
-      host: dotenv.HOST,
-      user: dotenv.USER,
-      password: dotenv.PASSWORD,
-      database: dotenv.DATABASE,
-    };
+let db_config: mysql.ConnectionConfig;
 
+function handleConnect() {
+  if (dotenv) {
+    db_config =
+      process.env.NODE_ENV === "dev"
+        ? {
+            host: dotenv.HOST_DEV,
+            user: dotenv.USER_DEV,
+            password: dotenv.PASSWORD_DEV,
+            database: dotenv.DATABASE_DEV,
+          }
+        : {
+            host: dotenv.HOST,
+            user: dotenv.USER,
+            password: dotenv.PASSWORD,
+            database: dotenv.DATABASE,
+          };
     db = mysql.createConnection(db_config);
 
     db.connect(function (err) {
       if (err) {
         console.log("error when connecting to db:", err);
-        setTimeout(handleDisconnect, 2000);
+        setTimeout(handleConnect, 2000);
       }
     });
 
     db.on("error", function (err) {
       console.log("db error", err);
       if (err.code === "PROTOCOL_CONNECTION_LOST") {
-        handleDisconnect();
+        handleConnect();
       } else {
         throw err;
       }
@@ -53,7 +62,7 @@ function handleDisconnect() {
   }
 }
 
-handleDisconnect();
+handleConnect();
 
 app.get("/api/waypoints/get", (req, res) => {
   const sqlSelect = "SELECT * FROM waypoints;";

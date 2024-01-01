@@ -5,9 +5,9 @@
   "main": "index.ts",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node index.ts",
+    "start": "NODE_ENV=prod ts-node-dev index.ts",
     "tsc": "tsc",
-    "server": "nodemon index.ts"
+    "dev": "NODE_ENV=dev ts-node-dev index.ts"
   },
   "author": "",
   "license": "ISC",
@@ -24,6 +24,7 @@
     "@types/express": "^4.17.20",
     "@types/mysql": "^2.15.23",
     "@types/node": "^20.8.7",
-    "ts-node": "^10.9.1"
+    "ts-node": "^10.9.1",
+    "ts-node-dev": "^2.0.0"
   }
 }
