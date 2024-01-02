@@ -22,7 +22,7 @@ import {
 
 const libraries = ["places"];
 
-const PathForm = ({ waypoints, setWaypoints }) => {
+const PathForm = () => {
   const dispatch = useDispatch();
 
   const { isLoaded } = useJsApiLoader({
@@ -60,11 +60,8 @@ const PathForm = ({ waypoints, setWaypoints }) => {
       randomPath
     );
 
-    const path = await pathService.createWayPoints(randomPath, pathInsert);
+    await pathService.createWayPoints(randomPath, pathInsert);
 
-    const concatedWaypoints = [...waypoints, ...path];
-
-    setWaypoints(concatedWaypoints);
     const newPath = {
       ...randomPathData,
       ID: pathInsert.pathID,

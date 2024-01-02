@@ -14,12 +14,14 @@ To run the server: (`back` directory)
 
 ## API endpoints
 
-`/api/waypoints/get`: GET all waypoints {ID, name, pathID}
+`/api/waypoints`: GET all waypoints {ID, name, pathID}
 
-`/api/paths/get`: GET all paths {ID, name, distance, duration, exhausting, nature, fun}
+`/api/paths`: GET all paths {ID, name, distance, duration, exhausting, nature, fun}
 
-`/api/waypoints/insert`: POST a waypoint with body: {name, pathID}
+`/api/paths/:pathID`: GET path data {ID, name, distance, duration, exhausting, nature, fun, waypoints}
 
-`/api/paths/insert`: POST a path with body: {name, distance, duration, exhausting, nature, fun}
+`/api/waypoints`: POST a waypoint with body: {name, pathID}
+
+`/api/paths`: POST a path with body: {name, distance, duration, exhausting, nature, fun}
 
 `/api/paths/:pathID/[fun/nature/exhausting]`: PUT to update the reaction count (fun, nature or exhausting) of path with **pathID**

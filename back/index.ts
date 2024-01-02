@@ -16,7 +16,7 @@ const dotenv = denv.config().parsed;
 
 import mysql from "mysql";
 
-import { Path } from "../types/types";
+import { Path, WayPoint } from "../types/types";
 
 let db: mysql.Connection;
 
@@ -64,21 +64,45 @@ function handleConnect() {
 
 handleConnect();
 
-app.get("/api/waypoints/get", (req, res) => {
+app.get("/api/waypoints", (req, res) => {
   const sqlSelect = "SELECT * FROM waypoints;";
   db.query(sqlSelect, (err, result) => {
     res.send(result);
   });
 });
 
-app.get("/api/paths/get", (req, res) => {
+app.get("/api/paths", (req, res) => {
   const sqlSelect = "SELECT * FROM paths;";
   db.query(sqlSelect, (err, result) => {
     res.send(result);
   });
 });
 
-app.post("/api/waypoints/insert", (req, res) => {
+app.get("/api/paths/:pathID", (req, res) => {
+  const pathID: number = Number(req.params.pathID);
+  const pathSelect = "SELECT * FROM paths WHERE ID = ?;";
+
+  const waypointSelect = "SELECT * FROM waypoints WHERE pathID = ?;";
+
+  let waypoints: WayPoint[];
+
+  db.query(waypointSelect, [pathID], (err, result) => {
+    waypoints = Object.values(JSON.parse(JSON.stringify(result)));
+  });
+
+  db.query(pathSelect, [pathID], (err, result) => {
+    const paths = Object(JSON.parse(JSON.stringify(result)));
+
+    const waypointedPaths = paths.map((path: Path) => ({
+      ...path,
+      waypoints,
+    }));
+
+    res.send(waypointedPaths);
+  });
+});
+
+app.post("/api/waypoints", (req, res) => {
   const name: string = req.body.name;
   const pathID: number = req.body.pathID;
 
@@ -91,7 +115,7 @@ app.post("/api/waypoints/insert", (req, res) => {
   });
 });
 
-app.post("/api/paths/insert", (req, res) => {
+app.post("/api/paths", (req, res) => {
   const name: string = req.body.name;
   const exhausting: number = req.body.exhausting;
   const nature: number = req.body.nature;

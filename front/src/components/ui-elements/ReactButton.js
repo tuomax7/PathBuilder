@@ -1,3 +1,4 @@
+import { useDispatch } from "react-redux";
 import pathService from "../../services/path.ts";
 
 import { IconButton, Box } from "@mui/material";
@@ -6,18 +7,14 @@ import DirectionsRunIcon from "@mui/icons-material/DirectionsRun";
 import MoodIcon from "@mui/icons-material/Mood";
 import ForestIcon from "@mui/icons-material/Forest";
 
-const ReactButton = ({ paths, pathToUpdate, reactionName, setPaths }) => {
+import { addReaction } from "../../reducers/pathReducer.js";
+
+const ReactButton = ({ pathToUpdate, reactionName }) => {
+  const dispatch = useDispatch();
+
   const handleReaction = async () => {
-    const updatedPath = await pathService.updatePathReactions(
-      pathToUpdate,
-      reactionName
-    );
-
-    const updatedPaths = paths.map((path) =>
-      path.ID === pathToUpdate.ID ? updatedPath : path
-    );
-
-    setPaths(updatedPaths);
+    await pathService.updatePathReactions(pathToUpdate, reactionName);
+    dispatch(addReaction({ pathToUpdate, reactionName }));
   };
 
   let icon = <MoodIcon color="primary" />;

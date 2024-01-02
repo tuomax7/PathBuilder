@@ -1,7 +1,8 @@
-import { createRef } from "react";
+import { createRef, useEffect, useState } from "react";
 import Togglable from "../ui-elements/Togglable.js";
 import Map from "../map/Map.js";
 import ReactButton from "../ui-elements/ReactButton.js";
+import pathService from "../../services/path.ts";
 
 import { durationString, metersToKilometers } from "../../utils/utils.js";
 
@@ -14,18 +15,25 @@ import {
   Box,
 } from "@mui/material";
 
-const Path = ({ waypoints, paths, setPaths, path }) => {
+const Path = ({ path }) => {
   const mapRef = createRef();
 
-  const waypointsOfPathID = (ID) => {
-    return waypoints.filter((waypoint) => waypoint.pathID === ID);
-  };
+  const [waypoints, setWaypoints] = useState([]);
+
+  useEffect(() => {
+    const fetchWaypoints = async () => {
+      const response = await pathService.getPath(path.ID);
+
+      setWaypoints(response.waypoints);
+    };
+    fetchWaypoints();
+  }, [path.ID]);
 
   const waypointLabel = (index) => {
     switch (index) {
       case 0:
         return "(start)";
-      case waypointsOfPathID(path.ID).length - 1:
+      case waypoints.length - 1:
         return "(end)";
       default:
         return "";
@@ -37,24 +45,9 @@ const Path = ({ waypoints, paths, setPaths, path }) => {
       <TableCell>
         <Box style={{ display: "flex", alignItems: "center", marginBottom: 2 }}>
           <Typography variant="h3">{path.name}</Typography>
-          <ReactButton
-            reactionName="fun"
-            pathToUpdate={path}
-            setPaths={setPaths}
-            paths={paths}
-          />
-          <ReactButton
-            reactionName="nature"
-            pathToUpdate={path}
-            setPaths={setPaths}
-            paths={paths}
-          />
-          <ReactButton
-            reactionName="exhausting"
-            pathToUpdate={path}
-            setPaths={setPaths}
-            paths={paths}
-          />
+          <ReactButton reactionName="fun" pathToUpdate={path} />
+          <ReactButton reactionName="nature" pathToUpdate={path} />
+          <ReactButton reactionName="exhausting" pathToUpdate={path} />
         </Box>
 
         {path.distance && path.duration ? (
@@ -68,13 +61,13 @@ const Path = ({ waypoints, paths, setPaths, path }) => {
         <Togglable buttonLabel="Show path!" ref={mapRef}>
           <Typography>Route:</Typography>
           <List>
-            {waypointsOfPathID(path.ID).map((waypoint, index) => (
+            {waypoints.map((waypoint, index) => (
               <ListItem key={waypoint.ID} sx={{ p: 0.5 }}>
                 {index + 1}. {waypoint.name} {waypointLabel(index)}
               </ListItem>
             ))}
           </List>
-          <Map waypoints={waypointsOfPathID(path.ID)} path={path} />
+          <Map waypoints={waypoints} path={path} />
         </Togglable>
       </TableCell>
     </TableRow>

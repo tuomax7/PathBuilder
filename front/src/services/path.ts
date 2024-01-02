@@ -13,13 +13,13 @@ if (!process.env.NODE_ENV || process.env.NODE_ENV === "development") {
 }
 
 const getPaths = async () => {
-  const response = await axios.get(`${urlBase}/api/paths/get`);
+  const response = await axios.get(`${urlBase}/api/paths`);
   return response.data;
 };
 
-const getWaypoints = async () => {
-  const response = await axios.get(`${urlBase}/api/waypoints/get`);
-  return response.data;
+const getPath = async (pathID: number) => {
+  const response = await axios.get(`${urlBase}/api/paths/${pathID}`);
+  return response.data[0];
 };
 
 const createPath = async (
@@ -35,7 +35,7 @@ const createPath = async (
     duration: durationResponse,
   };
 
-  const response = await axios.post(`${urlBase}/api/paths/insert`, newPath);
+  const response = await axios.post(`${urlBase}/api/paths`, newPath);
 
   return response.data[0];
 };
@@ -49,10 +49,7 @@ const createWaypoint = async (
     pathID: pathInsert.pathID,
   };
 
-  const response = await axios.post(
-    `${urlBase}/api/waypoints/insert`,
-    newWayPoint
-  );
+  const response = await axios.post(`${urlBase}/api/waypoints`, newWayPoint);
   return response;
 };
 
@@ -87,7 +84,7 @@ const updatePathReactions = async (
 // eslint-disable-next-line
 export default {
   getPaths,
-  getWaypoints,
+  getPath,
   createPath,
   createWayPoints,
   updatePathReactions,

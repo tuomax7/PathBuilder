@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import PathForm from "./components/path/PathForm.js";
 import PathList from "./components/path/PathList.js";
 
@@ -14,15 +14,13 @@ import { Container, Typography, Box } from "@mui/material";
 const App = () => {
   const dispatch = useDispatch();
 
-  const [waypoints, setWaypoints] = useState([]);
-
   useEffect(() => {
-    pathService.getPaths().then((res) => {
-      dispatch(setPaths(res));
-    });
-    pathService.getWaypoints().then((res) => {
-      setWaypoints(res);
-    });
+    const fetchPaths = async () => {
+      const paths = await pathService.getPaths();
+
+      dispatch(setPaths(paths));
+    };
+    fetchPaths();
   }, [dispatch]);
 
   const THEME = createTheme({
@@ -65,10 +63,10 @@ const App = () => {
           <Typography variant="h1" style={{ marginTop: 10 }}>
             FindMyPath
           </Typography>
-          <PathForm waypoints={waypoints} setWaypoints={setWaypoints} />
+          <PathForm />
         </Box>
 
-        <PathList waypoints={waypoints} />
+        <PathList />
       </Container>
     </ThemeProvider>
   );

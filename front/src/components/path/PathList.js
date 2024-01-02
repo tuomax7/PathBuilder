@@ -12,7 +12,7 @@ import {
   Box,
 } from "@mui/material";
 
-const PathList = ({ waypoints }) => {
+const PathList = () => {
   const paths = useSelector(({ sortBy, paths }) => {
     const sortedPaths = [...paths];
 
@@ -44,12 +44,7 @@ const PathList = ({ waypoints }) => {
             <Table>
               <TableBody>
                 {paths.map((path) => (
-                  <Path
-                    key={path.ID}
-                    paths={paths}
-                    path={path}
-                    waypoints={waypoints}
-                  />
+                  <Path key={path.ID} paths={paths} path={path} />
                 ))}
               </TableBody>
             </Table>
