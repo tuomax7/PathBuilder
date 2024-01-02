@@ -4,10 +4,10 @@
   "description": "",
   "main": "index.ts",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
     "start": "NODE_ENV=prod ts-node-dev index.ts",
     "tsc": "tsc",
-    "dev": "NODE_ENV=dev ts-node-dev index.ts"
+    "dev": "NODE_ENV=dev ts-node-dev index.ts",
+    "start:test": "NODE_ENV=test ts-node-dev index.ts"
   },
   "author": "",
   "license": "ISC",

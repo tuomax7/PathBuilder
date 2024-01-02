@@ -24,9 +24,9 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "test": "react-scripts test",
     "tsc": "tsc",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "test": "cypress open"
   },
   "eslintConfig": {
     "extends": [
@@ -48,6 +48,7 @@
   },
   "devDependencies": {
     "@types/axios": "^0.14.0",
-    "@types/node": "^20.8.7"
+    "@types/node": "^20.8.7",
+    "cypress": "^13.6.2"
   }
 }

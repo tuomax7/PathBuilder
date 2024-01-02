@@ -32,3 +32,11 @@ This runs the app in the development mode.
 Open [http://localhost:3001/api](http://localhost:3001/api) to access the server api.
 
 API endpoints are described in `back/readme.MD`.
+
+To run cypress E2E tests:
+
+## `npm run dev` in `back`
+
+## `npm start` in `front`
+
+### `npm run test`
