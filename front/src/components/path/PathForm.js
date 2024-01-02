@@ -78,6 +78,7 @@ const PathForm = () => {
   return (
     <form onSubmit={generate} style={{ alignItems: "center" }}>
       <TextField
+        id="pathNameInput"
         type="text"
         name="pathname"
         placeholder="name your path..."
@@ -123,6 +124,7 @@ const PathForm = () => {
         color="primary"
         type="submit"
         style={{ margin: "5px" }}
+        id="submit"
         disabled={startName === "" || pathname.trim() === ""}
       >
         Generate path!
