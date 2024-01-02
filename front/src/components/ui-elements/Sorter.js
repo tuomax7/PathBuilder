@@ -5,8 +5,12 @@ import {
   Typography,
   Box,
 } from "@mui/material";
+import { useDispatch } from "react-redux";
+import { sorterChange } from "../../reducers/pathSorterReducer.js";
 
-const Sorter = ({ setSortBy }) => {
+const Sorter = () => {
+  const dispatch = useDispatch();
+
   return (
     <Box marginBottom={2}>
       <Typography fontSize={18}>Sort by:</Typography>
@@ -20,25 +24,25 @@ const Sorter = ({ setSortBy }) => {
           value="reactions"
           control={<Radio />}
           label="Reactions"
-          onChange={() => setSortBy("reactions")}
+          onChange={() => dispatch(sorterChange("reactions"))}
         />
         <FormControlLabel
           value="distance"
           control={<Radio />}
           label="Distance"
-          onChange={() => setSortBy("distance")}
+          onChange={() => dispatch(sorterChange("distance"))}
         />
         <FormControlLabel
           value="duration"
           control={<Radio />}
           label="Duration"
-          onChange={() => setSortBy("duration")}
+          onChange={() => dispatch(sorterChange("duration"))}
         />
         <FormControlLabel
           value="name"
           control={<Radio />}
           label="Name"
-          onChange={() => setSortBy("name")}
+          onChange={() => dispatch(sorterChange("name"))}
         />
       </RadioGroup>
     </Box>

@@ -1,4 +1,6 @@
 import React, { useState } from "react";
+import { useDispatch } from "react-redux";
+import { createPath } from "../../reducers/pathReducer.js";
 
 import { useJsApiLoader } from "@react-google-maps/api";
 
@@ -20,7 +22,9 @@ import {
 
 const libraries = ["places"];
 
-const PathForm = ({ waypoints, setWaypoints, paths, setPaths }) => {
+const PathForm = ({ waypoints, setWaypoints }) => {
+  const dispatch = useDispatch();
+
   const { isLoaded } = useJsApiLoader({
     googleMapsApiKey: process.env.REACT_APP_MAPS_API,
     libraries,
@@ -61,14 +65,14 @@ const PathForm = ({ waypoints, setWaypoints, paths, setPaths }) => {
     const concatedWaypoints = [...waypoints, ...path];
 
     setWaypoints(concatedWaypoints);
-    setPaths(
-      paths.concat({
-        ...randomPathData,
-        ID: pathInsert.pathID,
-        distance: distanceResponse,
-        duration: durationResponse,
-      })
-    );
+    const newPath = {
+      ...randomPathData,
+      ID: pathInsert.pathID,
+      distance: distanceResponse,
+      duration: durationResponse,
+    };
+    dispatch(createPath(newPath));
+
     setPathname("");
   };
   if (!isLoaded) {

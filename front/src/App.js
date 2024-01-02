@@ -2,6 +2,9 @@ import React, { useEffect, useState } from "react";
 import PathForm from "./components/path/PathForm.js";
 import PathList from "./components/path/PathList.js";
 
+import { setPaths } from "./reducers/pathReducer.js";
+import { useDispatch } from "react-redux";
+
 import pathService from "./services/path.ts";
 
 import { createTheme, ThemeProvider } from "@mui/material/styles";
@@ -9,17 +12,18 @@ import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { Container, Typography, Box } from "@mui/material";
 
 const App = () => {
+  const dispatch = useDispatch();
+
   const [waypoints, setWaypoints] = useState([]);
-  const [paths, setPaths] = useState([]);
 
   useEffect(() => {
     pathService.getPaths().then((res) => {
-      setPaths(res);
+      dispatch(setPaths(res));
     });
     pathService.getWaypoints().then((res) => {
       setWaypoints(res);
     });
-  }, []);
+  }, [dispatch]);
 
   const THEME = createTheme({
     typography: {
@@ -61,15 +65,10 @@ const App = () => {
           <Typography variant="h1" style={{ marginTop: 10 }}>
             FindMyPath
           </Typography>
-          <PathForm
-            waypoints={waypoints}
-            setWaypoints={setWaypoints}
-            paths={paths}
-            setPaths={setPaths}
-          />
+          <PathForm waypoints={waypoints} setWaypoints={setWaypoints} />
         </Box>
 
-        <PathList waypoints={waypoints} paths={paths} setPaths={setPaths} />
+        <PathList waypoints={waypoints} />
       </Container>
     </ThemeProvider>
   );

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useSelector } from "react-redux";
 
 import Path from "./Path.js";
 import Sorter from "../ui-elements/Sorter.js";
@@ -12,42 +12,41 @@ import {
   Box,
 } from "@mui/material";
 
-const PathList = ({ paths, setPaths, waypoints }) => {
-  const [sortBy, setSortBy] = useState("reactions");
+const PathList = ({ waypoints }) => {
+  const paths = useSelector(({ sortBy, paths }) => {
+    const sortedPaths = [...paths];
 
-  const sortedPaths = () => {
     if (sortBy === "distance")
-      return paths.sort((a, b) => b.distance - a.distance);
+      return sortedPaths.sort((a, b) => b.distance - a.distance);
     else if (sortBy === "duration")
-      return paths.sort((a, b) => b.duration - a.duration);
+      return sortedPaths.sort((a, b) => b.duration - a.duration);
     else if (sortBy === "name") {
-      return paths.sort((a, b) => a.name.localeCompare(b.name));
+      return sortedPaths.sort((a, b) => a.name.localeCompare(b.name));
     } else {
-      return paths.sort(
+      return sortedPaths.sort(
         (a, b) =>
           b.fun + b.nature + b.exhausting - (a.fun + a.nature + a.exhausting)
       );
     }
-  };
+  });
 
   return (
     <Box paddingY={2}>
-      {sortedPaths().length === 0 ? (
+      {paths.length === 0 ? (
         <Typography>Start by generating a path!</Typography>
       ) : (
         <Box>
-          <Sorter setSortBy={setSortBy} />
+          <Sorter />
           <Typography variant="h2" marginBottom={2}>
             All paths
           </Typography>
           <TableContainer component={Paper}>
             <Table>
               <TableBody>
-                {sortedPaths().map((path) => (
+                {paths.map((path) => (
                   <Path
                     key={path.ID}
                     paths={paths}
-                    setPaths={setPaths}
                     path={path}
                     waypoints={waypoints}
                   />

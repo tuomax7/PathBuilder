@@ -16,7 +16,7 @@ import {
 
 const Path = ({ waypoints, paths, setPaths, path }) => {
   const mapRef = createRef();
-  //KORVAA SQL-KYSELYLLÄ
+
   const waypointsOfPathID = (ID) => {
     return waypoints.filter((waypoint) => waypoint.pathID === ID);
   };
