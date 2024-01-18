@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.ts",
   "scripts": {
-    "start": "NODE_ENV=prod ts-node-dev index.ts",
+    "start": "node build/back/index.js",
     "tsc": "tsc",
     "dev": "NODE_ENV=dev ts-node-dev index.ts",
     "start:test": "NODE_ENV=test ts-node-dev index.ts"

@@ -19,7 +19,7 @@ const getPaths = async () => {
 
 const getPath = async (pathID: number) => {
   const response = await axios.get(`${urlBase}/api/paths/${pathID}`);
-  return response.data[0];
+  return response.data;
 };
 
 const createPath = async (
@@ -37,13 +37,14 @@ const createPath = async (
 
   const response = await axios.post(`${urlBase}/api/paths`, newPath);
 
-  return response.data[0];
+  return response.data;
 };
 
 const createWaypoint = async (
   waypoint: NewWayPointEntry,
   pathInsert: { pathID: number }
 ) => {
+
   const newWayPoint: WayPoint = {
     ...waypoint,
     pathID: pathInsert.pathID,
@@ -59,11 +60,11 @@ const createWayPoints = async (
 ) => {
   return await Promise.all(
     randomPath.map(async (waypoint) => {
-      const waypointInsert = await createWaypoint(waypoint, pathInsert);
+      await createWaypoint(waypoint, pathInsert);
       return {
         ...waypoint,
         pathID: pathInsert.pathID,
-        ID: waypointInsert.data[0].ID,
+        // ID: waypointInsert.data[0].ID,
       };
     })
   );

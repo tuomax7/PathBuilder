@@ -15,6 +15,7 @@ const durationString = (duration) => {
 };
 
 const calculateDirectionsURL = (waypoints) => {
+
   const origin = waypoints[0].name;
   const waypointString = waypoints
     .slice(1, waypoints.length - 1)

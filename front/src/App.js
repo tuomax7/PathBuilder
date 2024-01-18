@@ -9,7 +9,7 @@ import pathService from "./services/path.ts";
 
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 
-import { Container, Typography, Box } from "@mui/material";
+import { Container, Typography, Box, Alert } from "@mui/material";
 
 const App = () => {
   const dispatch = useDispatch();
@@ -65,6 +65,7 @@ const App = () => {
           </Typography>
           <PathForm />
         </Box>
+				<Alert severity="warning" sx={{my: 2}}>The MySQL database for this app has been discontinued. Path additions / reactions are not stored permanently.</Alert>
 
         <PathList />
       </Container>

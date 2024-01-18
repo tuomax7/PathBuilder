@@ -23,7 +23,7 @@ const Path = ({ path }) => {
   useEffect(() => {
     const fetchWaypoints = async () => {
       const response = await pathService.getPath(path.ID);
-
+	
       setWaypoints(response.waypoints);
     };
     fetchWaypoints();
@@ -62,7 +62,7 @@ const Path = ({ path }) => {
           <Typography>Route:</Typography>
           <List>
             {waypoints.map((waypoint, index) => (
-              <ListItem key={waypoint.ID} sx={{ p: 0.5 }}>
+              <ListItem key={index} sx={{ p: 0.5 }}>
                 {index + 1}. {waypoint.name} {waypointLabel(index)}
               </ListItem>
             ))}

@@ -19,6 +19,7 @@ import {
   Typography,
   Box,
 } from "@mui/material";
+import path from "../../services/path.ts";
 
 const libraries = ["places"];
 

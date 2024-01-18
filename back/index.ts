@@ -10,13 +10,112 @@ app.use(cors());
 
 app.use(express.json());
 app.use(bodyParser.urlencoded({ extended: true }));
+
+
+import { Path, WayPoint } from "../types/types";
+
+let paths: Path[] = [];
+
+let waypoints: WayPoint[] = [];
+
+
+
+app.get("/api/waypoints", (req, res) => {
+  res.send(waypoints);
+});
+
+app.get("/api/paths", (req, res) => {
+  res.send(paths);
+});
+
+app.get("/api/paths/:pathID", (req, res) => {
+  const pathID: number = Number(req.params.pathID);
+
+	const path = paths.find(p => p.ID === pathID);
+
+	if(path) {
+		const wps = waypoints.filter(wp => wp.pathID === pathID)
+		res.send({...path, waypoints: wps})
+	}
+
+});
+
+app.post("/api/waypoints", (req, res) => {
+  const name: string = req.body.name;
+  const pathID: number = req.body.pathID;
+
+
+  waypoints = waypoints.concat({name, pathID});
+	res.send({name, pathID});
+});
+
+app.post("/api/paths", (req, res) => {
+  const name: string = req.body.name;
+  const exhausting: number = req.body.exhausting;
+  const nature: number = req.body.nature;
+  const fun: number = req.body.fun;
+  const distance: number = req.body.distance;
+  const duration: number = req.body.duration;
+
+	const pathToAdd: Path = {
+		ID: paths.length + 1,
+		name,
+		exhausting,
+		nature,
+		fun,
+		distance,
+		duration,
+		waypoints: []
+	}
+
+	paths = paths.concat(pathToAdd);
+
+	res.send({pathID: pathToAdd.ID})
+
+});
+
+app.put("/api/paths/:pathID/fun", (req, res) => {
+  const body: Path = req.body;
+  const pathID: number = Number(req.params.pathID);
+  const newFunCount: number = body.fun + 1;
+
+	paths = paths.map(p => p.ID === pathID ? {...p, fun: newFunCount} : p);
+	
+	const updated = paths.find(p => p.ID === pathID);
+	res.send(updated);
+
+});
+
+app.put("/api/paths/:pathID/nature", (req, res) => {
+  const body: Path = req.body;
+  const pathID: number = Number(req.params.pathID);
+  const newNaturalCount: number = body.nature + 1;
+
+  paths = paths.map(p => p.ID === pathID ? {...p, natural: newNaturalCount} : p);
+	const updated = paths.find(p => p.ID === pathID);
+	res.send(updated);
+});
+
+app.put("/api/paths/:pathID/exhausting", (req, res) => {
+  const body: Path = req.body;
+  const pathID: number = Number(req.params.pathID);
+  const newExhaustingCount: number = body.exhausting + 1;
+
+  paths = paths.map(p => p.ID === pathID ? {...p, exhausting: newExhaustingCount} : p);
+	const updated = paths.find(p => p.ID === pathID);
+	res.send(updated);
+});
+
+
+/*
+
+// DISCONTINUED MYSQL DATABASE CONFIGS
+
 import denv from "dotenv";
 
 const dotenv = denv.config().parsed;
 
 import mysql from "mysql";
-
-import { Path, WayPoint } from "../types/types";
 
 let db: mysql.Connection;
 
@@ -168,6 +267,8 @@ app.put("/api/paths/:pathID/exhausting", (req, res) => {
     res.send({ ...body, exhausting: newExhaustingCount });
   });
 });
+
+*/
 
 const PORT = process.env.PORT || 3001;
 app.listen(PORT, () => {

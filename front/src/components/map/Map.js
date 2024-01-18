@@ -16,6 +16,7 @@ import {
 const libraries = ["places"];
 
 const Map = ({ path, waypoints }) => {
+
   const { isLoaded } = useJsApiLoader({
     googleMapsApiKey: process.env.REACT_APP_MAPS_API,
     libraries,
