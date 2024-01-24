@@ -4,6 +4,7 @@
 
 An app for generating randomized routes for runs with Google Maps. Built using React, Node (with TypeScript) and MySQL. Tuomas Nummela 25.10.2023
 
+
 ## Instructions to run locally
 
 ### Setting up
@@ -16,17 +17,25 @@ Set up a MySQL connection and place your credentials to **HOST**, **USER**, **PA
 
 To run the client: (`front` directory)
 
-### `npm install`
+```bash
+npm install
+```
 
-### `npm start`
+```bash
+npm start
+```
 
 Open [http://localhost:3000](http://localhost:3000) to view the client in your browser.
 
 To run the server: (`back` directory)
 
-### `npm install`
+```bash
+npm install
+```
 
-### `npm run dev`
+```bash
+npm start
+```
 
 This runs the app in the development mode.
 Open [http://localhost:3001/api](http://localhost:3001/api) to access the server api.
@@ -35,8 +44,16 @@ API endpoints are described in `back/readme.MD`.
 
 To run cypress E2E tests:
 
-## `npm run dev` in `back`
+Run in `back`:
+```bash
+npm run dev
+```
 
-## `npm start` in `front`
+Run in `front`:
+```bash
+npm start
+```
 
-### `npm run test`
+```bash
+npm run test
+```
